@@ -50,7 +50,7 @@ namespace Lys
 
 		void init()
 		{
-			glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
+			m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
 
 			if (!m_window)
 			{
