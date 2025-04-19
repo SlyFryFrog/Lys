@@ -1,4 +1,5 @@
 module;
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -26,7 +27,7 @@ namespace Lys
 			std::ifstream file(path);
 			if (!file)
 			{
-				throw std::runtime_error("Failed to open file: " + path);
+				std::cout << "Failed to open file: " + path;
 			}
 
 			std::ostringstream ss;
