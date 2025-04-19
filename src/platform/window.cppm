@@ -22,6 +22,15 @@ namespace Lys
 		{
 		}
 
+		Window(const int width, const int height, const std::string& title) :
+			m_width(width), m_height(height), m_title(title)
+		{
+		}
+
+		explicit Window(const std::string& title) : m_title(title)
+		{
+		}
+
 		~Window()
 		{
 		}
@@ -30,8 +39,8 @@ namespace Lys
 		{
 			glfwInit();
 
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #ifdef __APPLE__
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -50,6 +59,8 @@ namespace Lys
 
 		void init()
 		{
+			init_glfw();
+
 			m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
 
 			if (!m_window)
@@ -62,21 +73,25 @@ namespace Lys
 			// Makes the current window context
 			glfwMakeContextCurrent(m_window);
 
-			// Associates window user pointer with current instance
-			glfwSetWindowUserPointer(m_window, this);
-			glfwSetFramebufferSizeCallback(m_window, frame_buffer_callback);
-			// glfwSetKeyCallback(_window, InputManager::_process_input_callback);
-			// glfwSetCursorPosCallback(_window, InputManager::_process_mouse_callback);
-			glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GLFW_FALSE);
-			glfwMakeContextCurrent(m_window);
-			glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			// // Associates window user pointer with current instance
+			// glfwSetWindowUserPointer(m_window, this);
+			// glfwSetFramebufferSizeCallback(m_window, frame_buffer_callback);
+			// // glfwSetKeyCallback(_window, InputManager::_process_input_callback);
+			// // glfwSetCursorPosCallback(_window, InputManager::_process_mouse_callback);
+			// glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GLFW_FALSE);
+			// glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-			frame_buffer_callback(m_window, m_width, m_height);
+			// frame_buffer_callback(m_window, m_width, m_height);
 		}
 
 		[[nodiscard]] GLFWwindow* get_native_window() const
 		{
 			return m_window;
+		}
+
+		[[nodiscard]] bool is_done() const
+		{
+			return glfwWindowShouldClose(m_window);
 		}
 	};
 } // namespace Lys

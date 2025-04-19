@@ -12,19 +12,20 @@ namespace Lys
 {
 	export class Rendering
 	{
-		static Renderer m_renderer;
+		static Renderer* m_renderer;
 
 	public:
 		Rendering() = default;
 
-		static void _init()
+		static void init()
 		{
-            m_renderer.init();
+			m_renderer = new Renderer();
+			m_renderer->init();
 		}
 
-		static Renderer get_renderer_singleton()
+		static Renderer& get_renderer_singleton()
 		{
-			return m_renderer;
+			return *m_renderer;
 		}
 
 		static void update_viewport(int width, int height)
@@ -32,5 +33,5 @@ namespace Lys
 		}
 	};
 
-	Renderer Rendering::m_renderer = Renderer();
+	Renderer* Rendering::m_renderer = nullptr;
 } // namespace Lys

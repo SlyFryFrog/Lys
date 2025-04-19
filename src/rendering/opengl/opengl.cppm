@@ -18,20 +18,22 @@ namespace Lys
 		
 		void init() override
 		{
-			// Initializes GLEW
-			if (glewInit() != GLEW_OK)
+			glewExperimental = GL_TRUE;
+			GLenum err = glewInit(); 
+			
+			if (err != GLEW_OK)
 			{
-				std::cout << "GLEW failed to initialize correctly.", glGetError();
+				std::cout << "GLEW failed to initialize correctly: " << glewGetErrorString(err)  << "\n";
 			}
 	
 			glEnable(GL_DEPTH_TEST);
 
-			std::cout << "Renderer: " << glGetString(GL_RENDERER);
-			std::cout << "OpenGL version: ", glGetString(GL_VERSION);
+			std::cout << "Renderer: " << glGetString(GL_RENDERER) << "\n";
+			std::cout << "OpenGL version: " << glGetString(GL_VERSION) << "\n";
 
 			int numAttributes;
 			glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &numAttributes);
-			std::cout << "Maximum number of vertex attributes supported: " << numAttributes;
+			std::cout << "Maximum number of vertex attributes supported: " << numAttributes << "\n";
 		}
 
 		void begin_frame() override
