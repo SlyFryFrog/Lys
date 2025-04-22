@@ -1,11 +1,9 @@
 module;
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <string>
 export module app;
 
-import rendering;
 import window;
+import rendering;
 
 namespace Lys
 {
@@ -31,7 +29,6 @@ namespace Lys
 		{
 			while (!m_window.is_done())
 			{
-				
 			}
 		}
 	};

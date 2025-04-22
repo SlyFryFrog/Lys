@@ -1,7 +1,9 @@
 module;
-#include <GL/glew.h>
+#define GLFW_INCLUDE_VULKAN
+
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <vulkan/vulkan.h>
 export module window;
 
 import rendering;
@@ -14,6 +16,7 @@ namespace Lys
 		int m_width{};
 		int m_height{};
 		std::string m_title{};
+		VkSurfaceKHR m_surface{};
 
 	public:
 		Window() = default;
@@ -33,18 +36,13 @@ namespace Lys
 
 		~Window()
 		{
+			cleanup();
 		}
 
-		static void init_glfw()
+		void cleanup()
 		{
-			glfwInit();
-
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+			glfwDestroyWindow(m_window);
+			glfwTerminate();
 		}
 
 		static void frame_buffer_callback(GLFWwindow* window, const int width, const int height)
@@ -59,7 +57,17 @@ namespace Lys
 
 		void init()
 		{
-			init_glfw();
+			if (!glfwInit())
+			{
+				std::cerr << "Failed to initialize glfw." << "\n";
+			}
+
+			glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
+			if (!glfwVulkanSupported())
+			{
+				throw std::runtime_error("GLFW: Vulkan not supported on this system!");
+			}
 
 			m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
 
@@ -84,6 +92,11 @@ namespace Lys
 			// frame_buffer_callback(m_window, m_width, m_height);
 		}
 
+		static void poll_events()
+		{
+			glfwPollEvents();
+		}
+
 		[[nodiscard]] GLFWwindow* get_native_window() const
 		{
 			return m_window;
@@ -92,6 +105,13 @@ namespace Lys
 		[[nodiscard]] bool is_done() const
 		{
 			return glfwWindowShouldClose(m_window);
+		}
+
+		void create_surface()
+		{
+			// if (glfwCreateWindowSurface(instance, m_window, nullptr, &m_surface) != VK_SUCCESS) {
+			// 	throw std::runtime_error("failed to create window surface!");
+			// }
 		}
 	};
 } // namespace Lys

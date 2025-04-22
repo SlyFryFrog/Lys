@@ -1,12 +1,9 @@
 module;
 export module rendering;
 
-#if defined(USE_METAL)
-using Renderer = Lys::MetalRenderer;
-#else
-import opengl;
-using Renderer = Lys::OpenGLRenderer;
-#endif
+import vulkan;
+
+using Renderer = Lys::VkRenderer;
 
 namespace Lys
 {

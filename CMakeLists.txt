@@ -9,8 +9,6 @@ file(GLOB_RECURSE MODULES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm)
 
 find_package(glm REQUIRED)
 find_package(glfw3 REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(OpenGL REQUIRED)
 find_package(Vulkan REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${MODULES})
@@ -20,8 +18,6 @@ target_link_libraries(
   PRIVATE 
       glm::glm
       glfw
-      GLEW::GLEW
-      OpenGL::GL
       Vulkan::Vulkan
 )
 
