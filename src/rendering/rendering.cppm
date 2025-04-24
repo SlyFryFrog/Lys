@@ -3,9 +3,13 @@ module;
 #include <utils/macros.hpp>
 export module rendering;
 
+#ifdef USE_VULKAN
 import vulkan;
-
 using Renderer = Lys::VkRenderer;
+#else
+import opengl;
+using Renderer = Lys::GLRenderer;
+#endif
 
 namespace Lys
 {

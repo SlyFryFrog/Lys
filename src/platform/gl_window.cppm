@@ -34,12 +34,7 @@ namespace Lys
 				std::cerr << "Failed to initialize glfw." << "\n";
 			}
 
-			glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-
-			if (!glfwVulkanSupported())
-			{
-				throw std::runtime_error("GLFW: Vulkan not supported on this system!");
-			}
+            create_opengl_context(4, 1);
 
 			m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
 
@@ -74,6 +69,10 @@ namespace Lys
             if (coreProfile)
             {
                 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            }
+            else
+            {
+                glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
             }
         }
     };

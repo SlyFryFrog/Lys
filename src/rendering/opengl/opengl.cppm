@@ -10,11 +10,11 @@ import renderer;
 
 namespace Lys
 {
-	export class OpenGLRenderer : public IRenderer
+	export class GLRenderer : public IRenderer
 	{
 	public:
-		OpenGLRenderer() = default;
-		~OpenGLRenderer() = default;
+		GLRenderer() = default;
+		~GLRenderer() = default;
 		
 		void init() override
 		{
