@@ -1,4 +1,6 @@
 module;
+#include <iostream>
+#include <utils/macros.hpp>
 export module rendering;
 
 import vulkan;
@@ -18,6 +20,8 @@ namespace Lys
 		{
 			m_renderer = new Renderer();
 			m_renderer->init();
+
+			std::cout << CLASS_NAME(m_renderer)  << "\n";
 		}
 
 		static Renderer& get_renderer_singleton()
