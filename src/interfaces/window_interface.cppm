@@ -23,10 +23,26 @@ namespace Lys
 		{
 		}
 
-		~IWindow() = default;
+		~IWindow()
+		{
+			cleanup();
+		}
 
 		virtual void init() = 0;
-		virtual void cleanup() = 0;
+
+		/**
+		 * @brief Destroys the Window instance.
+		 *
+		 */
+		void cleanup()
+		{
+			glfwDestroyWindow(m_window);
+		}
+
+		static void terminate()
+		{
+			glfwTerminate();
+		}
 
 		static void frame_buffer_callback(GLFWwindow* window, const int width, const int height)
 		{
@@ -36,6 +52,18 @@ namespace Lys
 		static void poll_events()
 		{
 			glfwPollEvents();
+		}
+
+		void set_cursor_status(bool status)
+		{
+			if (status)
+			{
+				glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			}
+			else
+			{
+				glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			}
 		}
 
 		[[nodiscard]] GLFWwindow* get_native_window() const

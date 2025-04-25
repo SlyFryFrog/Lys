@@ -41,7 +41,7 @@ namespace Lys
 		{
 		}
 
-		void resize(int width, int height) override
+		void update_viewport(int width, int height) override
 		{
 		}
 

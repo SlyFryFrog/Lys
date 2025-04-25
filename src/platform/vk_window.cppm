@@ -1,10 +1,10 @@
 module;
 #define GLFW_INCLUDE_VULKAN
 
-#include <Vulkan/vulkan.h>
-#include <string>
 #include <GLFW/glfw3.h>
+#include <Vulkan/vulkan.h>
 #include <iostream>
+#include <string>
 export module window:vk_window;
 
 import window_interface;
@@ -20,27 +20,21 @@ namespace Lys
 	public:
 		VkWindow() = default;
 
-		explicit VkWindow(const int width, const int height, const std::string& title) : IWindow(width, height, title)
+		explicit VkWindow(const int width, const int height, const std::string& title) :
+			IWindow(width, height, title)
 		{
-
-        }
+		}
 
 		~VkWindow()
 		{
 			cleanup();
 		}
 
-		void cleanup() override
-		{
-			glfwDestroyWindow(m_window);
-			glfwTerminate();
-		}
-
 		void init() override
 		{
 			if (!glfwInit())
 			{
-				std::cerr << "Failed to initialize glfw." << "\n";
+				std::cout << "Failed to initialize glfw.";
 			}
 
 			glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -55,7 +49,7 @@ namespace Lys
 			if (!m_window)
 			{
 				glfwTerminate();
-				std::cerr << "Failed to create Window instance! Terminating GLFW.";
+				std::cout << "Failed to create Window instance! Terminating GLFW.";
 				return;
 			}
 
@@ -73,7 +67,7 @@ namespace Lys
 			// frame_buffer_callback(m_window, m_width, m_height);
 		}
 
-    private:
+	private:
 		void create_surface()
 		{
 			// if (glfwCreateWindowSurface(instance, m_window, nullptr, &m_surface) != VK_SUCCESS) {

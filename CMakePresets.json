@@ -13,6 +13,7 @@
             "displayName": "Debug",
             "description": "Sets Ninja generator, build and install directory",
             "binaryDir": "${sourceDir}/out/build/Debug",
+            "hidden": true,
             "cacheVariables": {
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "1",
                 "CMAKE_BUILD_TYPE": "Debug"
@@ -24,8 +25,25 @@
             "displayName": "Release",
             "description": "Sets Ninja generator, build and install directory",
             "binaryDir": "${sourceDir}/out/Release",
+            "hidden": true,
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "inherits": "Debug",
+            "name": "Debug Vulkan",
+            "displayName": "Debug Vulkan",
+            "cacheVariables": {
+                "USE_VULKAN": "1"
+            }
+        },
+        {
+            "inherits": "Debug",
+            "displayName": "Debug OpenGL",
+            "name": "Debug OpenGL",
+            "cacheVariables": {
+                "USE_VULKAN": "0"
             }
         }
     ]

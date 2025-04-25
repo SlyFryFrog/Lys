@@ -12,7 +12,7 @@ namespace Lys
         virtual void begin_frame() = 0;
         virtual void draw() = 0;
         virtual void end_frame() = 0;
-        virtual void resize(int width, int height) = 0;
+        virtual void update_viewport(int width, int height) = 0;
         virtual void shutdown() = 0;
     };
 }

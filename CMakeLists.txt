@@ -13,7 +13,10 @@ find_package(Vulkan REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
-set(USE_VULKAN OFF)
+add_compile_options(
+    -Xclang -fno-validate-pch
+    -fretain-comments-from-system-headers
+)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${MODULES})
 target_sources(${PROJECT_NAME} PUBLIC FILE_SET allModules TYPE CXX_MODULES FILES ${MODULES})

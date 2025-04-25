@@ -1,5 +1,5 @@
 module;
-#include <iostream>
+#include <print>
 #include <utils/macros.hpp>
 export module rendering;
 
@@ -25,7 +25,7 @@ namespace Lys
 			m_renderer = new Renderer();
 			m_renderer->init();
 
-			std::cout << CLASS_NAME(m_renderer)  << "\n";
+			std::println("Render class: {0}", CLASS_NAME(m_renderer));
 		}
 
 		static Renderer& get_renderer_singleton()
@@ -35,6 +35,10 @@ namespace Lys
 
 		static void update_viewport(int width, int height)
 		{
+			if (m_renderer)
+			{
+				m_renderer->update_viewport(width, height);
+			}
 		}
 	};
 

@@ -1,7 +1,7 @@
 module;
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
+#include <print>
 export module opengl;
 
 export import :shader;
@@ -15,25 +15,26 @@ namespace Lys
 	public:
 		GLRenderer() = default;
 		~GLRenderer() = default;
-		
+
 		void init() override
 		{
 			glewExperimental = GL_TRUE;
-			GLenum err = glewInit(); 
-			
+			GLenum err = glewInit();
+
 			if (err != GLEW_OK)
 			{
-				std::cout << "GLEW failed to initialize correctly: " << glewGetErrorString(err)  << "\n";
+				std::println("GLEW failed to initialize correctly: ",
+							 (const char*)glewGetErrorString(err));
 			}
-	
+
 			glEnable(GL_DEPTH_TEST);
 
-			std::cout << "Renderer: " << glGetString(GL_RENDERER) << "\n";
-			std::cout << "OpenGL version: " << glGetString(GL_VERSION) << "\n";
+			std::println("Renderer: {0}", (const char*)glGetString(GL_RENDERER));
+			std::println("OpenGL version: {0}", (const char*)glGetString(GL_VERSION));
 
 			int numAttributes;
 			glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &numAttributes);
-			std::cout << "Maximum number of vertex attributes supported: " << numAttributes << "\n";
+			std::println("Maximum number of vertex attributes supported: {0}", numAttributes);
 		}
 
 		void begin_frame() override
@@ -48,8 +49,9 @@ namespace Lys
 		{
 		}
 
-		void resize(int width, int height) override
+		void update_viewport(int width, int height) override
 		{
+			glViewport(0, 0, width, height);
 		}
 
 		void shutdown() override
