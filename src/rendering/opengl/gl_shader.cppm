@@ -4,10 +4,10 @@ module;
 #include <glm/gtc/type_ptr.hpp>
 #include <print>
 #include <string>
-export module opengl:shader;
+export module lys.opengl.gl_shader;
 
-import file;
-import shader;
+import lys.core.io.file;
+import lys.rendering.shader;
 
 namespace Lys
 {

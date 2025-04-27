@@ -1,9 +1,8 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 4.0)
 project(Lys LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
-set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD ON)
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp)
 file(GLOB_RECURSE MODULES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm)
 
@@ -13,13 +12,10 @@ find_package(Vulkan REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
-add_compile_options(
-    -Xclang -fno-validate-pch
-    -fretain-comments-from-system-headers
-)
-
-add_executable(${PROJECT_NAME} ${SOURCES} ${MODULES})
+add_executable(${PROJECT_NAME} ${SOURCES})
 target_sources(${PROJECT_NAME} PUBLIC FILE_SET allModules TYPE CXX_MODULES FILES ${MODULES})
+
+# Link all necessary libraries
 target_link_libraries(
   ${PROJECT_NAME} 
   PRIVATE 
@@ -30,6 +26,7 @@ target_link_libraries(
       GLEW::GLEW
 )
 
+# Include path for internal access
 target_include_directories(
     ${PROJECT_NAME} 
     PRIVATE 

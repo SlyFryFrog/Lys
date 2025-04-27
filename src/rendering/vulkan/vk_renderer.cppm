@@ -3,7 +3,7 @@ module;
 #include <stdexcept>
 #include <vector>
 #include <vulkan/vulkan.h>
-export module vulkan;
+export module lys.vulkan.vk_renderer;
 
 import renderer;
 

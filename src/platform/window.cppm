@@ -1,12 +1,12 @@
 module;
-export module window;
+export module lys.platform.window;
 
-import rendering;
+import lys.rendering;
 
 #ifdef USE_VULKAN
-import :vk_window;
+import lys.platform.vk_window;
 export using Window = Lys::VkWindow;
 #else
-import :gl_window;
+import lys.platform.gl_window;
 export using Window = Lys::GLWindow;
 #endif

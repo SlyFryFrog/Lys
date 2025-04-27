@@ -2,11 +2,10 @@ module;
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <print>
-export module opengl;
-
-export import :shader;
+export module lys.opengl.gl_renderer;
 
 import renderer;
+import lys.opengl.gl_shader;
 
 namespace Lys
 {

@@ -2,8 +2,8 @@ module;
 #include <string>
 export module app;
 
-import window;
-import rendering;
+import lys.platform.window;
+import lys.rendering;
 
 namespace Lys
 {

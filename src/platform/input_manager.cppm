@@ -1,5 +1,5 @@
 module;
-export module input_manager;
+export module lys.platform.input_manager;
 
 namespace Lys
 {

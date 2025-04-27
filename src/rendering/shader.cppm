@@ -1,9 +1,9 @@
 module;
 #include <glm/glm.hpp>
 #include <string>
-export module shader;
+export module lys.rendering.shader;
 
-import file;
+import lys.core.io.file;
 
 namespace Lys
 {

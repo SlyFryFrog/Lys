@@ -3,7 +3,7 @@ module;
 #include <string>
 export module window_interface;
 
-import rendering;
+import lys.rendering;
 
 namespace Lys
 {

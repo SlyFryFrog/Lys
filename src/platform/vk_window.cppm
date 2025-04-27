@@ -5,10 +5,11 @@ module;
 #include <Vulkan/vulkan.h>
 #include <iostream>
 #include <string>
-export module window:vk_window;
+#include <print>
+export module lys.platform.vk_window;
 
 import window_interface;
-import rendering;
+import lys.rendering;
 
 
 namespace Lys

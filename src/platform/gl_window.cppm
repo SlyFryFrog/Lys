@@ -2,10 +2,10 @@ module;
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <string>
-export module window:gl_window;
+export module lys.platform.gl_window;
 
 import window_interface;
-import rendering;
+import lys.rendering;
 
 namespace Lys
 {
