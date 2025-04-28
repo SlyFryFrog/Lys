@@ -28,7 +28,7 @@ namespace Lys
 
 		~VkWindow()
 		{
-			cleanup();
+			destroy();
 		}
 
 		void init() override

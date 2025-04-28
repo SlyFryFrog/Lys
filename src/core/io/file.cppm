@@ -1,5 +1,9 @@
 module;
+#include <cstdint>
+#include <vector>
+#include <filesystem>
 #include <fstream>
+#include <ios>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -13,10 +17,16 @@ namespace Lys
 
 	public:
 		File() = default;
+
 		explicit File(const std::string& path) : m_path(path)
 		{
 		}
 
+		/**
+		 * @brief
+		 *
+		 * @return std::string
+		 */
 		[[nodiscard]] std::string read() const
 		{
 			return read(m_path);
@@ -40,6 +50,51 @@ namespace Lys
 			std::ostringstream ss;
 			ss << file.rdbuf();
 			return ss.str();
+		}
+
+		bool write(const std::string& contents, std::ios::openmode operation)
+		{
+			std::ofstream file(m_path, operation);
+
+			if (!file)
+			{
+				std::cout << "Failed to open file: " + m_path;
+				return false;
+			}
+
+			file << contents;
+
+			return true;
+		}
+
+		bool write(const std::vector<std::uint8_t>& contents, std::ios::openmode operation)
+		{
+			std::ofstream file(m_path, operation);
+
+			if (!file)
+			{
+				std::cout << "Failed to open file: " + m_path;
+				return false;
+			}
+
+			file << contents.data();
+
+			return true;
+		}
+
+		[[nodiscard]] bool exists() const
+		{
+			return std::filesystem::exists(m_path);
+		}
+
+		[[nodiscard]] size_t file_size() const
+		{
+			return std::filesystem::file_size(m_path);
+		}
+
+		[[nodiscard]] std::filesystem::path path() const
+		{
+			return m_path;
 		}
 	};
 } // namespace Lys

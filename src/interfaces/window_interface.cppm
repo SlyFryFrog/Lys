@@ -25,7 +25,7 @@ namespace Lys
 
 		~IWindow()
 		{
-			cleanup();
+			destroy();
 		}
 
 		virtual void init() = 0;
@@ -34,9 +34,14 @@ namespace Lys
 		 * @brief Destroys the Window instance.
 		 *
 		 */
-		void cleanup()
+		void destroy() const
 		{
 			glfwDestroyWindow(m_window);
+		}
+
+		void swap_buffers() const
+		{
+			glfwSwapBuffers(m_window);
 		}
 
 		static void terminate()

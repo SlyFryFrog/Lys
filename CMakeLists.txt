@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.31)
 project(Lys LANGUAGES CXX)
 
+set(BUILD_DEMO 1)
+
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp)
@@ -12,7 +14,7 @@ find_package(Vulkan REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_library(${PROJECT_NAME} ${SOURCES})
 target_sources(${PROJECT_NAME} PUBLIC FILE_SET allModules TYPE CXX_MODULES FILES ${MODULES})
 
 # Link all necessary libraries
@@ -38,4 +40,9 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json
     )
+endif()
+
+if (BUILD_DEMO)
+    add_subdirectory(demo)
+    # target_link_libraries(demo PRIVATE )
 endif()
