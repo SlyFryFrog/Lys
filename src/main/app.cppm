@@ -1,6 +1,6 @@
 module;
 #include <string>
-export module app;
+export module lys.main.app;
 
 import lys.platform.input.input_manager;
 import lys.platform.window;
@@ -10,6 +10,7 @@ namespace Lys
 {
 	export class App
 	{
+	protected:
 		Window m_window;
 
 	public:

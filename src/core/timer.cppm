@@ -1,2 +1,2 @@
 module;
-export module lys.timer;
+export module lys.core.timer;

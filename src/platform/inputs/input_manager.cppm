@@ -53,6 +53,7 @@ namespace Lys
 
 			std::shared_ptr<InputEvent> event = std::make_shared<InputEvent>(lysKey, state);
 
+			// Add to recent queue if just pressed
 			if (state == InputState::JUST_PRESSED)
 			{
 				m_recentQueue.push(event);
@@ -71,6 +72,9 @@ namespace Lys
 		{
 		}
 
+		/**
+		 * @brief Processes and updates Input states and events.
+		 */
 		static void _process()
 		{
 			// Handle all events in the queue
@@ -93,18 +97,7 @@ namespace Lys
 				}
 			}
 
-			// Clear recentQueue of all !is_pressed elements
-			std::queue<std::shared_ptr<InputEvent>> tempQueue;
-			while (!m_recentQueue.empty())
-			{
-				std::shared_ptr<InputEvent> event = m_recentQueue.front();
-				m_recentQueue.pop();
-				if (is_pressed(event->get_key()) || event->is_just_pressed())
-				{
-					tempQueue.push(event);
-				}
-			}
-			m_recentQueue = tempQueue;
+			clear_recent_queue();
 		}
 
 		static bool is_pressed(Key key)
@@ -142,38 +135,22 @@ namespace Lys
 			return !m_events.contains(key);
 		}
 
-
+		/**
+		 * @return std::map<Key, std::shared_ptr<InputEvent>> Map of Key, InputEvent pairs.
+		 */
 		static std::map<Key, std::shared_ptr<InputEvent>> get_events()
 		{
 			return m_events;
 		}
 
-		static bool is_combo_hold(const std::vector<Key>& keys)
-		{
-			for (const Key& key : keys)
-			{
-				if (!is_pressed(key)) // Use your existing is_pressed
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-
-		template <size_t N>
-		static bool is_combo_hold(const std::array<Key, N>& keys)
-		{
-			for (const Key& key : keys)
-			{
-				if (!is_pressed(key)) // Use your existing is_pressed
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-
+		/**
+		 * @brief Checks if keys are pressed in a specific order.
+		 *
+		 * @param keys Order of keys being pressed.
+		 * @return true Keys are pressed in the specific order.
+		 * @return false Either not all keys are pressed or some key is pressed that is not in the
+		 * keys.
+		 */
 		static bool is_ordered_combo_hold(const std::initializer_list<Key>& keys)
 		{
 			std::queue<std::shared_ptr<InputEvent>> tempRecentQueue = m_recentQueue;
@@ -233,6 +210,12 @@ namespace Lys
 		}
 
 	private:
+		/**
+		 * @brief Converts a integer code from GLFW to enum Key.
+		 *
+		 * @param key The GLFW key code.
+		 * @return Key The converted key.
+		 */
 		static Key convert_code(int key)
 		{
 			Key lysKey;
@@ -250,6 +233,29 @@ namespace Lys
 			}
 
 			return lysKey;
+		}
+
+		/**
+		 * @brief Clear all elements that are not currently pressed from recent queue.
+		 */
+		static void clear_recent_queue()
+		{
+			// Clear recentQueue of all !is_pressed elements
+			std::queue<std::shared_ptr<InputEvent>> tempQueue;
+			while (!m_recentQueue.empty())
+			{
+				std::shared_ptr<InputEvent> event = m_recentQueue.front();
+				m_recentQueue.pop();
+
+				// Copy element to other queue
+				if (is_pressed(event->get_key())) // Checks if event contains key and is pressed
+				{
+					tempQueue.emplace(event);
+				}
+			}
+
+			// Update queue
+			m_recentQueue = tempQueue;
 		}
 	};
 
