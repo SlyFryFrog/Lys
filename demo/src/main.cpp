@@ -1,7 +1,5 @@
-#include <string>
-
 import lys;
-
+import demo.player;
 
 using namespace Lys;
 
@@ -21,7 +19,7 @@ public:
 			{
 				break;
 			}
-
+			
 			InputManager::_process();
 		}
 
@@ -30,13 +28,13 @@ public:
 	}
 };
 
-
 int main()
 {
 	DemoApp app;
-	
+
 	app.init();
+	app.process();
 	app.destroy();
 
-    return 0;
+	return 0;
 }

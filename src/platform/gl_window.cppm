@@ -59,6 +59,16 @@ namespace Lys
 		}
 
 	private:
+		/**
+		 * @brief Sets the version of OpenGL to be used.
+		 * 
+		 * @code
+		 * create_opengl_context(4, 1);
+		 * @endcode
+		 * 
+		 * @param major Major version, all versions above 4 are supported.
+		 * @param minor Minor version, all versions above 1 are supported.
+		 */
 		static void create_opengl_context(int major, int minor)
 		{
 			// Set OpenGL version (ie 4.6)

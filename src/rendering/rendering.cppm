@@ -20,6 +20,9 @@ namespace Lys
 	public:
 		Rendering() = default;
 
+		/**
+		 * @brief Initializes Rendering pipeline and underlying Renderer.
+		 */
 		static void init()
 		{
 			m_renderer = new Renderer();

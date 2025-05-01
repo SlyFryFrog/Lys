@@ -1,6 +1,6 @@
 # Lys
 
-## Features
+## Tooling
 
 - **CMake 3.30**: Uses modern CMake for enhanced project configuration.
 - **Ninja Build System**: Default build generator for fast and efficient compilation.
@@ -21,7 +21,8 @@
 1. **Clone the Repository**:
 
 ```
-git@github.com:SlyFryFrog/Lys.git```
+git clone git@github.com:SlyFryFrog/Lys.git
+```
 
 2. **Run CMake Preset**
 

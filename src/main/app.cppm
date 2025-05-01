@@ -19,12 +19,11 @@ namespace Lys
 			m_window = Window(100, 100, "Lys Engine");
 			m_window.init();
 			Rendering::init();
-
-			process();
 		}
 
 		virtual void destroy()
 		{
+			m_window.terminate();			
 		}
 
 		virtual void process()

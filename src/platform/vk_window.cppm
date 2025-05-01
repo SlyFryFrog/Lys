@@ -5,11 +5,11 @@ module;
 #include <vulkan/vulkan.h>
 #include <iostream>
 #include <string>
-#include <print>
 export module lys.platform.vk_window;
 
 import window_interface;
 import lys.rendering;
+import lys.platform.input.input_manager;
 
 
 namespace Lys
@@ -58,14 +58,14 @@ namespace Lys
 			glfwMakeContextCurrent(m_window);
 
 			// // Associates window user pointer with current instance
-			// glfwSetWindowUserPointer(m_window, this);
-			// glfwSetFramebufferSizeCallback(m_window, frame_buffer_callback);
-			// // glfwSetKeyCallback(_window, InputManager::_process_input_callback);
-			// // glfwSetCursorPosCallback(_window, InputManager::_process_mouse_callback);
-			// glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GLFW_FALSE);
-			// glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			glfwSetWindowUserPointer(m_window, this);
+			glfwSetFramebufferSizeCallback(m_window, frame_buffer_callback);
+			glfwSetKeyCallback(m_window, InputManager::_process_input_callback);
+			glfwSetCursorPosCallback(m_window, InputManager::_process_mouse_callback);
+			glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GLFW_FALSE);
+			glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-			// frame_buffer_callback(m_window, m_width, m_height);
+			frame_buffer_callback(m_window, m_width, m_height);
 		}
 
 	private:

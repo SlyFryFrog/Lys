@@ -5,14 +5,6 @@ import lys.platform.input.input_map;
 
 namespace Lys
 {
-    export enum class InputState
-    {
-        PRESSED,
-        JUST_PRESSED,
-        RELEASED,
-        JUST_RELEASED
-    };
-
 	export class InputEvent
 	{
 		Key m_key{};

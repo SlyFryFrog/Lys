@@ -6,15 +6,15 @@ namespace Lys
 	export class Node
 	{
 	public:
-		void _init()
+		virtual void _init()
 		{
 		}
 
-		void _process(double delta)
+		virtual void _process(double delta)
 		{
 		}
 		
-        void _destroy()
+        virtual void _destroy()
 		{
 		}
 	};
