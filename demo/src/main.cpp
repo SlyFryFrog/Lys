@@ -1,5 +1,6 @@
 import lys;
 import demo.player;
+import lys.core.scripting.julia.julia_engine;
 
 using namespace Lys;
 
@@ -10,6 +11,9 @@ public:
 
 	void process() override
 	{
+		JuliaEngine::load_script("/home/marcus/dev/Lys/demo/scripts/player.jl");
+		JuliaEngine::call_function("Player", "init", nullptr);
+
 		while (!m_window.is_done())
 		{
 			m_window.swap_buffers();
@@ -19,7 +23,7 @@ public:
 			{
 				break;
 			}
-			
+
 			InputManager::_process();
 		}
 

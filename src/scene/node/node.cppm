@@ -6,6 +6,8 @@ namespace Lys
 	export class Node
 	{
 	public:
+		Node() = default;
+		
 		virtual void _init()
 		{
 		}

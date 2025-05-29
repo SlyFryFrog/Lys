@@ -5,6 +5,7 @@ export module lys.main.app;
 import lys.platform.input.input_manager;
 import lys.platform.window;
 import lys.rendering;
+import lys.core.scripting.julia.julia_engine;
 
 namespace Lys
 {
@@ -19,11 +20,14 @@ namespace Lys
 			m_window = Window(100, 100, "Lys Engine");
 			m_window.init();
 			Rendering::init();
+
+			JuliaEngine::init();
 		}
 
 		virtual void destroy()
 		{
 			m_window.terminate();			
+			//JuliaEngine::shutdown();
 		}
 
 		virtual void process()
