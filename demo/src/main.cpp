@@ -1,3 +1,8 @@
+#include <jlcxx/jlcxx.hpp>
+#include <jlcxx/type_conversion.hpp>
+#include <julia.h>
+#include <vector>
+
 import lys;
 import demo.player;
 import lys.core.scripting.julia.julia_engine;
@@ -11,8 +16,20 @@ public:
 
 	void process() override
 	{
-		JuliaEngine::load_script("/home/marcus/dev/Lys/demo/scripts/player.jl");
-		JuliaEngine::call_function("Player", "init", nullptr);
+		JuliaEngine::load_script("/Users/marcus/dev/Lys/src/core/scripting/julia/bindings/lys.jl");
+		JuliaEngine::load_script("/Users/marcus/dev/Lys/demo/scripts/player.jl");
+		// JuliaEngine::call_function("Player", "term", nullptr);
+
+
+		// Node node;
+		// auto boxed = jlcxx::box<Node>(node);
+		// jl_value_t* n = boxed.value;
+
+		// std::vector<jl_value_t*> args;
+		// args.push_back(n);
+		// JuliaEngine::call_function("Player", "init", &args);
+		// args.push_back((jl_value_t*)jl_box_float64(3.9));
+		// JuliaEngine::call_function("Player", "process", &args);
 
 		while (!m_window.is_done())
 		{
@@ -20,6 +37,11 @@ public:
 			Window::poll_events();
 
 			if (InputManager::is_ordered_combo_hold({Key::KEY_ESCAPE, Key::KEY_SHIFT}))
+			{
+				break;
+			}
+
+			if (InputManager::is_just_pressed(Key::KEY_ESCAPE))
 			{
 				break;
 			}

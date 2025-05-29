@@ -16,7 +16,8 @@
             "hidden": true,
             "cacheVariables": {
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "1",
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CXXWRAP_PREFIX_PATH": "/Users/marcus/.julia/artifacts/a339b092561f57ff8cfb0fd8a100a8d5380695f6"
             }
         },
         {

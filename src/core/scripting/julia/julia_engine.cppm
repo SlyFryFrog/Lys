@@ -4,10 +4,9 @@ module;
 #include <vector>
 export module lys.core.scripting.julia.julia_engine;
 
-JULIA_DEFINE_FAST_TLS // only define this once, in an executable (not in a shared library) if you
-					  // want fast code.
+JULIA_DEFINE_FAST_TLS
 
-	namespace Lys
+namespace Lys
 {
 	export class JuliaEngine
 	{

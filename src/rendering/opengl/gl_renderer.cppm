@@ -1,7 +1,7 @@
 module;
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <print>
+#include <iostream>
 export module lys.opengl.gl_renderer;
 
 import renderer;
@@ -22,18 +22,18 @@ namespace Lys
 
 			if (err != GLEW_OK)
 			{
-				std::println("GLEW failed to initialize correctly: ",
-							 (const char*)glewGetErrorString(err));
+				std::cout << "GLEW failed to initialize correctly: " << 
+							 (const char*)glewGetErrorString(err) << "\n";
 			}
 
 			glEnable(GL_DEPTH_TEST);
 
-			std::println("Renderer: {0}", (const char*)glGetString(GL_RENDERER));
-			std::println("OpenGL version: {0}", (const char*)glGetString(GL_VERSION));
+			std::cout << "Renderer: " << (const char*)glGetString(GL_RENDERER) << "\n";
+			std::cout << "OpenGL version: " << (const char*)glGetString(GL_VERSION) << "\n";
 
 			int numAttributes;
 			glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &numAttributes);
-			std::println("Maximum number of vertex attributes supported: {0}", numAttributes);
+			std::cout << "Maximum number of vertex attributes supported: " << numAttributes << "\n";
 		}
 
 		void begin_frame() override

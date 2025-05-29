@@ -1,12 +1,12 @@
 module;
 export module demo.player;
 
-import lys;
+// import lys;
 
-class Player : public Lys::Camera3D
-{
-public:
-	void _process(double delta) override
-	{
-	}
-};
+// class Player : public Lys::Camera3D
+// {
+// public:
+// 	void _process(double delta) override
+// 	{
+// 	}
+// };

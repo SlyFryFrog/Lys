@@ -2,7 +2,7 @@ module;
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <print>
+#include <iostream>
 #include <string>
 export module lys.opengl.gl_shader;
 
@@ -131,7 +131,7 @@ namespace Lys
 			int location = glGetUniformLocation(m_id, name.c_str());
 			if (location == -1)
 			{
-				std::println("Warning: uniform '{0}' doesn't exist!", name);
+				std::cout << "Warning: uniform " << name << " doesn't exist!";
 			}
 			return location;
 		}

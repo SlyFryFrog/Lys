@@ -1,5 +1,5 @@
 module;
-#include <print>
+#include <iostream>
 #include <utils/macros.hpp>
 export module lys.rendering;
 
@@ -28,7 +28,7 @@ namespace Lys
 			m_renderer = new Renderer();
 			m_renderer->init();
 
-			std::println("Render class: {0}", CLASS_NAME(m_renderer));
+			std::cout << "Render class: " <<  CLASS_NAME(m_renderer) << "\n";
 		}
 
 		static Renderer& get_renderer_singleton()

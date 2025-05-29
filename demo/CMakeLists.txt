@@ -30,3 +30,4 @@ endif()
 
 target_sources(${PROJECT_NAME} PUBLIC FILE_SET allModules TYPE CXX_MODULES FILES ${MODULES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
