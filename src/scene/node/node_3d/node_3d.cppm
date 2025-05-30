@@ -8,6 +8,7 @@ namespace Lys
     export class Node3D : public Node
     {
     public:
+        Node3D() = default;
 
     };
 }

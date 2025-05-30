@@ -4,7 +4,7 @@ export module lys.platform.input.input_map;
 
 namespace Lys
 {
-	export enum class InputState
+	export enum InputState
     {
         PRESSED,
         JUST_PRESSED,
@@ -13,6 +13,7 @@ namespace Lys
     };
 	
 	export enum Key {
+		KEY_0 = GLFW_KEY_0,
 		KEY_1 = GLFW_KEY_1,
 		KEY_2 = GLFW_KEY_2,
 		KEY_3 = GLFW_KEY_3,

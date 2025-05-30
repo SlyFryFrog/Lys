@@ -2,29 +2,28 @@ module Player
 push!(LOAD_PATH, "../../src/core/scripting/julia/bindings/lys.jl")
 using ..Lys
 
-node = Lys.Node()  # calls the C++ default constructor
-println(typeof(node))
+mutable struct Character
+    parent::Lys.Node
+    position::NTuple{3,Float32}
+    speed::Float32
+end
 
-println("Hello from Julia")
-Lys.set_name(node, "Fabien")
-println(Lys.get_name(node))
+Character() = Character(Lys.Node(), (0f0, 0f0, 0f0), 1.0f0)
+global node::Union{Character,Nothing} = nothing
 
-# function term()::Cvoid
-#     println("Hello from julia!")
-#     init(node)
-#     Lys.set_name(node, "Fabien")
-#     println(Lys.get_name(node));
-# end
+# Define global state of Character
+function on_ready()
+    global node = Character()
+end
 
-# function init(self::Lys.Node)::Cvoid
-#     println(typeof(self))
-    
-#     # name = get_name(self)          # calls get_name, returns string
-#     # println(name)
-#     # self.set_name("Alice")          # calls set_name, sets m_name
-# end
+function process(delta::Float64)::Cvoid
+    Lys.set_name(node.parent, "Fabien")
+    println(Lys.get_name(node.parent))
+    println("Processing with delta=", delta)
+end
 
-# function process(self::Lys.Node, delta::Float64)::Cvoid
-#     println(delta)
-# end
+function process_inputs()
+
+end
+
 end

@@ -1,6 +1,5 @@
 module;
 #include <GLFW/glfw3.h>
-#include <array>
 #include <cstddef>
 #include <initializer_list>
 #include <iostream>

@@ -2,6 +2,7 @@ module;
 #include <julia.h>
 #include <string>
 #include <vector>
+#include <jlcxx/jlcxx.hpp>
 export module lys.core.scripting.julia.julia_engine;
 
 JULIA_DEFINE_FAST_TLS

@@ -18,18 +18,15 @@ public:
 	{
 		JuliaEngine::load_script("/Users/marcus/dev/Lys/src/core/scripting/julia/bindings/lys.jl");
 		JuliaEngine::load_script("/Users/marcus/dev/Lys/demo/scripts/player.jl");
-		// JuliaEngine::call_function("Player", "term", nullptr);
 
+		Node node;
+		auto boxed = jlcxx::box<Node>(node);
+		jl_value_t* n = boxed.value;
 
-		// Node node;
-		// auto boxed = jlcxx::box<Node>(node);
-		// jl_value_t* n = boxed.value;
-
-		// std::vector<jl_value_t*> args;
-		// args.push_back(n);
-		// JuliaEngine::call_function("Player", "init", &args);
-		// args.push_back((jl_value_t*)jl_box_float64(3.9));
-		// JuliaEngine::call_function("Player", "process", &args);
+		std::vector<jl_value_t*> args;
+		JuliaEngine::call_function("Player", "on_ready", &args);
+		args.push_back(jl_box_float64(3.9));
+		JuliaEngine::call_function("Player", "process", &args);
 
 		while (!m_window.is_done())
 		{
