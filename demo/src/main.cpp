@@ -27,7 +27,9 @@ public:
 		JuliaEngine::call_function("Player", "on_ready", &args);
 		args.push_back(jl_box_float64(3.9));
 		JuliaEngine::call_function("Player", "process", &args);
-
+		args.clear();
+		auto result = JuliaEngine::call_function("Player", "get_node_type", nullptr);
+		
 		while (!m_window.is_done())
 		{
 			m_window.swap_buffers();

@@ -13,6 +13,7 @@ namespace Lys
 
 	public:
 		Node() = default;
+		virtual ~Node() = default;
 		
 		virtual void _init()
 		{

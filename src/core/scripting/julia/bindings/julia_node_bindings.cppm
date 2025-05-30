@@ -35,9 +35,9 @@ namespace Lys
 	JLCXX_MODULE define_lys_module(::jlcxx::Module& mod)
 	{
 		mod.add_type<Node>("Node")
-			.method("init", &Node::_init)
-			.method("process", &Node::_process)
-			.method("destroy", &Node::_destroy)
+			.method("_init", &Lys::Node::_init)
+			.method("_process", &Lys::Node::_process)
+			.method("_destroy", &Lys::Node::_destroy)
 			.method("get_name", &Node::get_name)
 			.method("set_name", &Node::set_name)
 			.constructor<>();

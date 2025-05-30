@@ -2,7 +2,7 @@ module Player
 push!(LOAD_PATH, "../../src/core/scripting/julia/bindings/lys.jl")
 using ..Lys
 
-mutable struct Character
+mutable struct Character <: Lys.Node
     parent::Lys.Node
     position::NTuple{3,Float32}
     speed::Float32
@@ -22,7 +22,7 @@ function process(delta::Float64)::Cvoid
     println("Processing with delta=", delta)
 end
 
-function process_inputs()
+function process_inputs(event::Lys.InputEvent)
 
 end
 
