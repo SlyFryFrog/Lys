@@ -3,6 +3,7 @@ module;
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
+#include "vulkan/vulkan_core.h"
 export module lys.vulkan.vk_renderer;
 
 import vulkan_hpp;
@@ -69,8 +70,8 @@ namespace Lys
 			createInfo.pNext = nullptr;
 
 #ifdef __APPLE__
-			createInfo.flags = VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR; // Required on
-																				 // macOS
+			// Required on macOS
+			createInfo.flags = vk::InstanceCreateFlagBits::eEnumeratePortabilityKHR;
 #endif
 			createInfo.pApplicationInfo = &appInfo;
 
