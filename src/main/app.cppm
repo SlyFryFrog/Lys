@@ -21,7 +21,7 @@ namespace Lys
 			m_window.init();
 			Rendering::init();
 
-			JuliaEngine::init();
+			// JuliaEngine::init();
 		}
 
 		virtual void destroy()

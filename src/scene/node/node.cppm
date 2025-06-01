@@ -1,6 +1,5 @@
 module;
 #include <string>
-#include <jlcxx/jlcxx.hpp>
 export module lys.scene.node;
 
 import lys.core.scripting.julia.julia_engine;

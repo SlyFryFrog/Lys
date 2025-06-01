@@ -1,7 +1,7 @@
-#include <jlcxx/jlcxx.hpp>
-#include <jlcxx/type_conversion.hpp>
-#include <julia.h>
-#include <vector>
+// #include <jlcxx/jlcxx.hpp>
+// #include <jlcxx/type_conversion.hpp>
+// #include <julia.h>
+// #include <vector>
 
 import lys;
 import demo.player;
@@ -16,19 +16,19 @@ public:
 
 	void process() override
 	{
-		JuliaEngine::load_script("/Users/marcus/dev/Lys/src/core/scripting/julia/bindings/lys.jl");
-		JuliaEngine::load_script("/Users/marcus/dev/Lys/demo/scripts/player.jl");
+		// JuliaEngine::load_script("/Users/marcus/dev/Lys/src/core/scripting/julia/bindings/lys.jl");
+		// JuliaEngine::load_script("/Users/marcus/dev/Lys/demo/scripts/player.jl");
 
-		Node node;
-		auto boxed = jlcxx::box<Node>(node);
-		jl_value_t* n = boxed.value;
+		// Node node;
+		// auto boxed = jlcxx::box<Node>(node);
+		// jl_value_t* n = boxed.value;
 
-		std::vector<jl_value_t*> args;
-		JuliaEngine::call_function("Player", "on_ready", &args);
-		args.push_back(jl_box_float64(3.9));
-		JuliaEngine::call_function("Player", "process", &args);
-		args.clear();
-		auto result = JuliaEngine::call_function("Player", "get_node_type", nullptr);
+		// std::vector<jl_value_t*> args;
+		// JuliaEngine::call_function("Player", "on_ready", &args);
+		// args.push_back(jl_box_float64(3.9));
+		// JuliaEngine::call_function("Player", "process", &args);
+		// args.clear();
+		// auto result = JuliaEngine::call_function("Player", "get_node_type", nullptr);
 		
 		while (!m_window.is_done())
 		{
