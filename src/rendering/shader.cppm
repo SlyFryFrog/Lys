@@ -10,7 +10,9 @@ namespace Lys
 	export class IShader
 	{
 	public:
-        virtual void bind() const = 0;
+		virtual ~IShader() = default;
+
+		virtual void bind() const = 0;
         virtual void unbind() const = 0;
         
 		// Matrices

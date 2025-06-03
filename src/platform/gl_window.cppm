@@ -10,7 +10,7 @@ import lys.platform.input.input_manager;
 
 namespace Lys
 {
-	export class GLWindow : public IWindow
+	export class GLWindow final : public IWindow
 	{
 	public:
 		GLWindow() = default;
@@ -20,15 +20,13 @@ namespace Lys
 		{
 		}
 
-		~GLWindow()
-		{
-		}
+		~GLWindow() override = default;
 
 		void init() override
 		{
 			if (!glfwInit())
 			{
-				std::cout << "Failed to initialize glfw." << "\n";
+				std::println("Failed to initialize glfw.");
 				return;
 			}
 
@@ -40,7 +38,7 @@ namespace Lys
 			if (!m_window)
 			{
 				glfwTerminate();
-				std::cout << "Failed to create Window instance! Terminating GLFW." << "\n";
+				std::println("Failed to create Window instance! Terminating GLFW.");
 				return;
 			}
 
@@ -69,7 +67,7 @@ namespace Lys
 		 * @param major Major version, all versions above 4 are supported.
 		 * @param minor Minor version, all versions above 1 are supported.
 		 */
-		static void create_opengl_context(int major, int minor)
+		static void create_opengl_context(const int major, const int minor)
 		{
 			// Set OpenGL version (ie 4.6)
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
@@ -81,7 +79,7 @@ namespace Lys
 		 *
 		 * @param coreProfile Either enable or disable the use of GLFW_OPENGL_CORE_PROFILE.
 		 */
-		static void set_glfw_hints(bool coreProfile = true)
+		static void set_glfw_hints(const bool coreProfile = true)
 		{
 			if (coreProfile)
 			{

@@ -2,9 +2,9 @@ module;
 #define GLFW_INCLUDE_VULKAN
 
 #include <GLFW/glfw3.h>
-#include <vulkan/vulkan.h>
 #include <iostream>
 #include <string>
+#include <vulkan/vulkan.h>
 export module lys.platform.vk_window;
 
 import window_interface;
@@ -14,7 +14,7 @@ import lys.platform.input.input_manager;
 
 namespace Lys
 {
-	export class VkWindow : public IWindow
+	export class VkWindow final : public IWindow
 	{
 		VkSurfaceKHR m_surface{};
 
@@ -26,7 +26,7 @@ namespace Lys
 		{
 		}
 
-		~VkWindow()
+		~VkWindow() override
 		{
 			destroy();
 		}
@@ -35,14 +35,15 @@ namespace Lys
 		{
 			if (!glfwInit())
 			{
-				std::cout << "Failed to initialize glfw.";
+				std::println("Failed to initialize glfw.");
 			}
 
 			glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
 			if (!glfwVulkanSupported())
 			{
-				throw std::runtime_error("GLFW: Vulkan not supported on this system!");
+				throw std::runtime_error(
+					"GLFW: Vulkan not supported on this system! Try selecting an OpenGL context.");
 			}
 
 			m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
@@ -50,7 +51,7 @@ namespace Lys
 			if (!m_window)
 			{
 				glfwTerminate();
-				std::cout << "Failed to create Window instance! Terminating GLFW.";
+				std::println("Failed to create Window instance! Terminating GLFW.");
 				return;
 			}
 

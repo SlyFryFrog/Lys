@@ -6,7 +6,6 @@ int main()
 
     app.init();
     app.process();
-    app.destroy();
-    
+
     return 0;
 }

@@ -5,16 +5,23 @@ export module lys.main.app;
 import lys.platform.input.input_manager;
 import lys.platform.window;
 import lys.rendering;
-import lys.core.scripting.julia.julia_engine;
+// import lys.core.scripting.julia.julia_engine;
 
 namespace Lys
 {
 	export class App
 	{
 	protected:
-		Window m_window;
+		Window m_window{};
 
 	public:
+		App() = default;
+		virtual ~App()
+		{
+			m_window.terminate();
+			// JuliaEngine::shutdown();
+		}
+
 		virtual void init()
 		{
 			m_window = Window(100, 100, "Lys Engine");
@@ -24,12 +31,6 @@ namespace Lys
 			// JuliaEngine::init();
 		}
 
-		virtual void destroy()
-		{
-			m_window.terminate();			
-			//JuliaEngine::shutdown();
-		}
-
 		virtual void process()
 		{
 			while (!m_window.is_done())
@@ -37,16 +38,13 @@ namespace Lys
 				m_window.swap_buffers();
 				Window::poll_events();
 
-				if (InputManager::is_ordered_combo_hold({Key::KEY_ESCAPE, Key::KEY_SHIFT}))
+				if (InputManager::is_ordered_combo_hold({KEY_ESCAPE, KEY_SHIFT}))
 				{
 					break;
 				}
 
 				InputManager::_process();
 			}
-
-			m_window.destroy();
-			Window::terminate();
 		}
 	};
 } // namespace Lys

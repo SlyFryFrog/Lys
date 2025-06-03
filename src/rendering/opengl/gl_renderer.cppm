@@ -1,7 +1,6 @@
 module;
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
+#include <print>
 export module lys.opengl.gl_renderer;
 
 import renderer;
@@ -9,31 +8,31 @@ import lys.opengl.gl_shader;
 
 namespace Lys
 {
-	export class GLRenderer : public IRenderer
+	export class GLRenderer final : public IRenderer
 	{
 	public:
 		GLRenderer() = default;
-		~GLRenderer() = default;
+		~GLRenderer() override = default;
 
 		void init() override
 		{
 			glewExperimental = GL_TRUE;
-			GLenum err = glewInit();
 
-			if (err != GLEW_OK)
+			if (const GLenum err = glewInit(); err != GLEW_OK)
 			{
-				std::cout << "GLEW failed to initialize correctly: " << 
-							 (const char*)glewGetErrorString(err) << "\n";
+				std::println("GLEW failed to initialize correctly: {0}",
+							 reinterpret_cast<const char*>(glewGetErrorString(err)));
 			}
 
 			glEnable(GL_DEPTH_TEST);
 
-			std::cout << "Renderer: " << (const char*)glGetString(GL_RENDERER) << "\n";
-			std::cout << "OpenGL version: " << (const char*)glGetString(GL_VERSION) << "\n";
+			std::println("Renderer: {0}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+			std::println("OpenGL version: {0}",
+						 reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 
 			int numAttributes;
 			glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &numAttributes);
-			std::cout << "Maximum number of vertex attributes supported: " << numAttributes << "\n";
+			std::println("Maximum number of vertex attributes supported: {0}", numAttributes);
 		}
 
 		void begin_frame() override
@@ -48,7 +47,7 @@ namespace Lys
 		{
 		}
 
-		void update_viewport(int width, int height) override
+		void update_viewport(const int width, const int height) override
 		{
 			glViewport(0, 0, width, height);
 		}

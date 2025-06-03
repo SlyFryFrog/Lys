@@ -5,11 +5,12 @@
 
 import lys;
 import demo.player;
-import lys.core.scripting.julia.julia_engine;
+
+import vertices;
 
 using namespace Lys;
 
-class DemoApp : public App
+class DemoApp final : public App
 {
 public:
 	DemoApp() = default;
@@ -29,7 +30,9 @@ public:
 		// JuliaEngine::call_function("Player", "process", &args);
 		// args.clear();
 		// auto result = JuliaEngine::call_function("Player", "get_node_type", nullptr);
-		
+
+		draw_square();
+
 		while (!m_window.is_done())
 		{
 			m_window.swap_buffers();
@@ -59,7 +62,6 @@ int main()
 
 	app.init();
 	app.process();
-	app.destroy();
 
 	return 0;
 }

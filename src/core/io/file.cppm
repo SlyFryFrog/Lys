@@ -1,5 +1,4 @@
 module;
-#include <cstdint>
 #include <vector>
 #include <filesystem>
 #include <fstream>
@@ -52,7 +51,7 @@ namespace Lys
 			return ss.str();
 		}
 
-		bool write(const std::string& contents, std::ios::openmode operation)
+		[[nodiscard]] bool write(const std::string& contents, const std::ios::openmode operation) const
 		{
 			std::ofstream file(m_path, operation);
 
@@ -67,7 +66,8 @@ namespace Lys
 			return true;
 		}
 
-		bool write(const std::vector<std::uint8_t>& contents, std::ios::openmode operation)
+		[[nodiscard]] bool write(const std::vector<std::uint8_t>& contents,
+				   const std::ios::openmode operation) const
 		{
 			std::ofstream file(m_path, operation);
 

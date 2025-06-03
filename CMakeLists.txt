@@ -71,7 +71,7 @@ target_link_libraries(VulkanHppModule PRIVATE Vulkan::Vulkan Vulkan::Headers)
 # Source files
 file(GLOB_RECURSE SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/macros.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/macros.cpp
 )
 
 file(GLOB_RECURSE MODULES
@@ -105,7 +105,8 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 
 target_link_libraries(
     ${PROJECT_NAME}
-    PRIVATE
+    # PRIVATE
+    PUBLIC
         glm::glm
         glfw
         VulkanHppModule

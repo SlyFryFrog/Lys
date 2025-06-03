@@ -23,7 +23,7 @@ namespace Lys
 		{
 		}
 
-		~IWindow()
+		virtual ~IWindow()
 		{
 			destroy();
 		}

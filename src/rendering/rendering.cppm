@@ -1,7 +1,8 @@
 module;
 #include <iostream>
-#include <utils/macros.hpp>
 export module lys.rendering;
+
+import lys.utils;
 
 #ifdef USE_VULKAN
 import lys.vulkan.vk_renderer;
@@ -28,7 +29,7 @@ namespace Lys
 			m_renderer = new Renderer();
 			m_renderer->init();
 
-			std::cout << "Render class: " <<  CLASS_NAME(m_renderer) << "\n";
+			std::cout << "Render class: " <<  class_name(m_renderer).get() << "\n";
 		}
 
 		static Renderer& get_renderer_singleton()

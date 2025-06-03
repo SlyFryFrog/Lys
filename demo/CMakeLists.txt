@@ -24,7 +24,7 @@ else()
     target_link_libraries(
         Lys
         PRIVATE
-            ${PROJECT_NAME} 
+            ${PROJECT_NAME}
     )
 endif()
 
