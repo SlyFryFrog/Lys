@@ -13,7 +13,9 @@ namespace Lys
 	export class GLWindow final : public IWindow
 	{
 	public:
-		GLWindow() = default;
+		explicit GLWindow(const std::string& title) : IWindow(title) {}
+
+		explicit GLWindow(const bool fullscreen, const std::string& title) : IWindow(fullscreen, title) {}
 
 		explicit GLWindow(const int width, const int height, const std::string& title) :
 			IWindow(width, height, title)
@@ -42,18 +44,7 @@ namespace Lys
 				return;
 			}
 
-			// Makes the current window context
-			glfwMakeContextCurrent(m_window);
-
-			// Associates window user pointer with current instance
-			glfwSetWindowUserPointer(m_window, this);
-			glfwSetFramebufferSizeCallback(m_window, frame_buffer_callback);
-			glfwSetKeyCallback(m_window, InputManager::_process_input_callback);
-			glfwSetCursorPosCallback(m_window, InputManager::_process_mouse_callback);
-			glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GLFW_FALSE);
-			glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-			frame_buffer_callback(m_window, m_width, m_height);
+			set_glfw_window_defaults(m_window);
 		}
 
 	private:
@@ -76,19 +67,11 @@ namespace Lys
 
 		/**
 		 * @brief Set GLFW hints for OpenGL-specific functionality.
-		 *
-		 * @param coreProfile Either enable or disable the use of GLFW_OPENGL_CORE_PROFILE.
 		 */
-		static void set_glfw_hints(const bool coreProfile = true)
+		static void set_glfw_hints()
 		{
-			if (coreProfile)
-			{
-				glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-			}
-			else
-			{
-				glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-			}
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+			glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
 			// Required by macOS
 #ifdef __APPLE__

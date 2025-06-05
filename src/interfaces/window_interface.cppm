@@ -4,6 +4,7 @@ module;
 export module window_interface;
 
 import lys.rendering;
+import lys.platform.input.input_manager;
 
 namespace Lys
 {
@@ -14,12 +15,20 @@ namespace Lys
 		std::string m_title;
 		int m_width{};
 		int m_height{};
+		bool m_fullscreen{};
 
 	public:
 		IWindow() = default;
 
-		explicit IWindow(const int width, const int height, const std::string& title) :
-			m_width(width), m_height(height), m_title(title)
+		explicit IWindow(const std::string& title) : m_title(title)
+		{
+		}
+		IWindow(const bool fullscreen, const std::string& title) :
+			m_title(title), m_fullscreen(fullscreen)
+		{
+		}
+		IWindow(const int width, const int height, const std::string& title) :
+			m_title(title), m_width(width), m_height(height)
 		{
 		}
 
@@ -30,13 +39,13 @@ namespace Lys
 
 		virtual void init() = 0;
 
-		/**
-		 * @brief Destroys the Window instance.
-		 *
-		 */
-		void destroy() const
+		void destroy()
 		{
-			glfwDestroyWindow(m_window);
+			if (m_window)
+			{
+				glfwDestroyWindow(m_window);
+				m_window = nullptr;
+			}
 		}
 
 		void swap_buffers() const
@@ -44,12 +53,18 @@ namespace Lys
 			glfwSwapBuffers(m_window);
 		}
 
+		static void clear_buffer()
+		{
+			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+		}
+
 		static void terminate()
 		{
 			glfwTerminate();
 		}
 
-		static void frame_buffer_callback(GLFWwindow* window, const int width, const int height)
+		static void frame_buffer_callback(GLFWwindow* window, int width, int height)
 		{
 			Rendering::update_viewport(width, height);
 		}
@@ -59,16 +74,10 @@ namespace Lys
 			glfwPollEvents();
 		}
 
-		void set_cursor_status(bool status)
+		void set_cursor_status(bool status) const
 		{
-			if (status)
-			{
-				glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			}
-			else
-			{
-				glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-			}
+			glfwSetInputMode(m_window, GLFW_CURSOR,
+							 status ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
 		}
 
 		[[nodiscard]] GLFWwindow* get_native_window() const
@@ -84,6 +93,81 @@ namespace Lys
 		void set_title(const std::string& title)
 		{
 			m_title = title;
+			glfwSetWindowTitle(m_window, title.c_str());
+		}
+
+		void resize(const int width, const int height)
+		{
+			if (width <= 0 || height <= 0 || !m_window)
+			{
+				return;
+			}
+
+			m_width = width;
+			m_height = height;
+
+			glfwSetWindowSize(m_window, width, height);
+			glViewport(0, 0, width, height);
+		}
+
+		void set_fullscreen()
+		{
+			if (!m_fullscreen)
+			{
+
+				GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+				const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+				m_height = mode->height;
+				m_width = mode->width;
+				m_fullscreen = true;
+
+				glfwDestroyWindow(m_window);
+
+				glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+				m_window = glfwCreateWindow(mode->width, mode->height, m_title.c_str(), monitor,
+											nullptr);
+
+				glViewport(0, 0, m_width, m_height);
+				set_glfw_window_defaults(m_window);
+			}
+		}
+
+		void set_windowed(const int width, const int height)
+		{
+			m_fullscreen = false;
+			m_width = width;
+			m_height = height;
+
+			glfwDestroyWindow(m_window);
+
+			m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
+			glViewport(0, 0, width, height);
+			set_glfw_window_defaults(m_window);
+		}
+
+		void show() const
+		{
+			glfwShowWindow(m_window);
+		}
+
+		void hide() const
+		{
+			glfwHideWindow(m_window);
+		}
+
+		void set_glfw_window_defaults(GLFWwindow* window)
+		{
+			glfwMakeContextCurrent(window);
+			glfwSetWindowUserPointer(window, this);
+			glfwSetFramebufferSizeCallback(window, frame_buffer_callback);
+			glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_FALSE);
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+			glfwSetKeyCallback(window, InputManager::_process_input_callback);
+			glfwSetCursorPosCallback(window, InputManager::_process_mouse_callback);
+
+			frame_buffer_callback(window, m_width, m_height);
 		}
 	};
 } // namespace Lys

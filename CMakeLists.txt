@@ -103,6 +103,10 @@ endif()
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 
+if (APPLE)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE GL_SILENCE_DEPRECATION)
+endif()
+
 target_link_libraries(
     ${PROJECT_NAME}
     # PRIVATE

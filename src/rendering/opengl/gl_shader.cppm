@@ -3,40 +3,116 @@ module;
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <print>
 #include <string>
 export module lys.opengl.gl_shader;
 
+export import lys.rendering.shader;
 import lys.core.io.file;
-import lys.rendering.shader;
 
 namespace Lys
 {
-	export struct Shaders
+	export class GLShader final : public IShader
 	{
-		std::string vertex{};
-		std::string fragment{};
-
-		Shaders() = default;
-
-		Shaders(const std::string& vertex, const std::string& fragment) :
-			vertex(vertex), fragment(fragment)
-		{
-		}
-	};
-
-	export class GLShader : IShader
-	{
-		unsigned int m_id{};
-		Shaders m_shaders;
-
 	public:
-		explicit GLShader(const Shaders& shaders)
+		explicit GLShader(const ShaderType type, const std::string& file) : IShader()
 		{
-			m_shaders = shaders;
-			create();
+			m_type = type;
+			m_source = File(file);
 		}
 
 		~GLShader() override = default;
+
+		void compile() override
+		{
+			// Give OpenGL the appropriate shader type during creation
+			if (m_type == Vertex)
+			{
+				m_id = glCreateShader(GL_VERTEX_SHADER);
+			}
+			else if (m_type == Fragment)
+			{
+				m_id = glCreateShader(GL_FRAGMENT_SHADER);
+			}
+			else if (m_type == Geometry)
+			{
+				m_id = glCreateShader(GL_GEOMETRY_SHADER);
+			}
+			else if (m_type == Compute)
+			{
+				m_id = glCreateShader(GL_COMPUTE_SHADER);
+			}
+
+			// Shader code, .glsl
+			const std::string strSrc = m_source.read();
+			const char* src = strSrc.c_str();
+
+			glShaderSource(m_id, 1, &src, nullptr);
+			glCompileShader(m_id);
+
+			check_compile_status();
+		}
+
+		void check_compile_status() const
+		{
+			GLint success;
+			glGetShaderiv(m_id, GL_COMPILE_STATUS, &success);
+
+			if (success == GL_FALSE)
+			{
+				char log[512];
+				glGetShaderInfoLog(m_id, 512, nullptr, log);
+				std::println(std::cerr, "Shader compile error:\n{}", std::string(log));
+			}
+		}
+	};
+
+
+	export class GLShaderProgram final : public IShaderProgram
+	{
+	public:
+		GLShaderProgram() = default;
+
+		explicit GLShaderProgram(const std::vector<std::shared_ptr<IShader>>& shaders) : IShaderProgram()
+		{
+			m_shaders = shaders;
+		}
+
+		~GLShaderProgram() override = default;
+
+		void link() override
+		{
+			// Reset program id if it already exists
+			if (m_id)
+			{
+				glDeleteProgram(m_id);
+			}
+			m_id = glCreateProgram();
+
+			for (const auto& shader : m_shaders)
+			{
+				attach(shader);
+			}
+
+			glLinkProgram(m_id);
+
+			GLint success;
+			glGetProgramiv(m_id, GL_LINK_STATUS, &success);
+
+			if (!success)
+			{
+				char infoLog[512];
+				glGetProgramInfoLog(m_id, 512, nullptr, infoLog);
+				std::println("Shader program linking failed: {0}", std::string(infoLog));
+			}
+
+			for (const auto& shader : m_shaders)
+			{
+				glDetachShader(m_id, shader->get_id());
+			}
+
+			m_shaders.clear();
+		}
 
 		/**
 		 * @brief Binds the shader program for use in subsequent OpenGL rendering calls.
@@ -54,64 +130,37 @@ namespace Lys
 			glUseProgram(0);
 		}
 
-		void create()
-		{
-			// Invalid shader, needs at minimum vertex and fragment shaders
-			if (m_shaders.vertex.empty() || m_shaders.fragment.empty())
-			{
-				return;
-			}
-
-			m_id = glCreateProgram();
-		}
-
-		void set_uniform_mat2(const std::string& name, const glm::mat2& matrix) const override
+		void set_uniform(const std::string& name, const glm::mat2& matrix) const override
 		{
 			glUniformMatrix2fv(get_uniform_location(name), 1, GL_FALSE, &matrix[0][0]);
 		}
 
-		void set_uniform_mat3(const std::string& name, const glm::mat3& matrix) const override
+		void set_uniform(const std::string& name, const glm::mat3& matrix) const override
 		{
 			glUniformMatrix3fv(get_uniform_location(name), 1, GL_FALSE, &matrix[0][0]);
 		}
 
-		void set_uniform_mat4(const std::string& name, const glm::mat4& matrix) const override
+		void set_uniform(const std::string& name, const glm::mat4& matrix) const override
 		{
 			glUniformMatrix4fv(get_uniform_location(name), 1, GL_FALSE, &matrix[0][0]);
 		}
 
-
-		void set_uniform_vec2(const std::string& name, const glm::vec2& vector) const override
-		{
-			glUniform2dv(get_uniform_location(name), 1, (double*)glm::value_ptr(vector));
-		}
-
-		void set_uniform_vec3(const std::string& name, const glm::vec3& vector) const override
-		{
-			glUniform3dv(get_uniform_location(name), 1, (double*)glm::value_ptr(vector));
-		}
-
-		void set_uniform_vec4(const std::string& name, const glm::vec4& vector) const override
-		{
-			glUniform4dv(get_uniform_location(name), 1, (double*)glm::value_ptr(vector));
-		}
-
-		void set_uniform_int(const std::string& name, const int value) const override
+		void set_uniform(const std::string& name, const int value) const override
 		{
 			glUniform1i(get_uniform_location(name), value);
 		}
 
-		void set_uniform_int2(const std::string& name, const glm::ivec2& value) const override
+		void set_uniform(const std::string& name, const glm::ivec2& value) const override
 		{
 			glUniform2iv(get_uniform_location(name), 1, glm::value_ptr(value));
 		}
 
-		void set_uniform_int3(const std::string& name, const glm::ivec3& value) const override
+		void set_uniform(const std::string& name, const glm::ivec3& value) const override
 		{
 			glUniform3iv(get_uniform_location(name), 1, glm::value_ptr(value));
 		}
 
-		void set_uniform_int4(const std::string& name, const glm::ivec4& value) const override
+		void set_uniform(const std::string& name, const glm::ivec4& value) const override
 		{
 			glUniform4iv(get_uniform_location(name), 1, glm::value_ptr(value));
 		}
@@ -122,7 +171,7 @@ namespace Lys
 		 * @param name The name of the uniform variable.
 		 * @param value The uint value to set.
 		 */
-		void set_uniform_uint(const std::string& name, unsigned int value) const override
+		void set_uniform(const std::string& name, unsigned int value) const override
 		{
 			glUniform1ui(get_uniform_location(name), value);
 		}
@@ -134,7 +183,7 @@ namespace Lys
 		 * @param name The name of the uniform variable.
 		 * @param value The uvec2 value to set.
 		 */
-		void set_uniform_uint2(const std::string& name, const glm::uvec2& value) const override
+		void set_uniform(const std::string& name, const glm::uvec2& value) const override
 		{
 			glUniform2uiv(get_uniform_location(name), 1, glm::value_ptr(value));
 		}
@@ -146,7 +195,7 @@ namespace Lys
 		 * @param name The name of the uniform variable.
 		 * @param value The uvec3 value to set.
 		 */
-		void set_uniform_uint3(const std::string& name, const glm::uvec3& value) const override
+		void set_uniform(const std::string& name, const glm::uvec3& value) const override
 		{
 			glUniform3uiv(get_uniform_location(name), 1, glm::value_ptr(value));
 		}
@@ -158,7 +207,7 @@ namespace Lys
 		 * @param name The name of the uniform variable.
 		 * @param value The uvec4 value to set.
 		 */
-		void set_uniform_uint4(const std::string& name, const glm::uvec4& value) const override
+		void set_uniform(const std::string& name, const glm::uvec4& value) const override
 		{
 			glUniform4uiv(get_uniform_location(name), 1, glm::value_ptr(value));
 		}
@@ -169,7 +218,7 @@ namespace Lys
 		 * @param name The name of the uniform variable.
 		 * @param value The float value to set.
 		 */
-		void set_uniform_float(const std::string& name, float value) const override
+		void set_uniform(const std::string& name, const float value) const override
 		{
 			glUniform1f(get_uniform_location(name), value);
 		}
@@ -180,7 +229,7 @@ namespace Lys
 		 * @param name The name of the uniform variable.
 		 * @param value The fvec2 value to set.
 		 */
-		void set_uniform_float2(const std::string& name, const glm::fvec2& value) const override
+		void set_uniform(const std::string& name, const glm::vec2& value) const override
 		{
 			glUniform2fv(get_uniform_location(name), 1, glm::value_ptr(value));
 		}
@@ -191,7 +240,7 @@ namespace Lys
 		 * @param name The name of the uniform variable.
 		 * @param value The fvec3 value to set.
 		 */
-		void set_uniform_float3(const std::string& name, const glm::fvec3& value) const override
+		void set_uniform(const std::string& name, const glm::vec3& value) const override
 		{
 			glUniform3fv(get_uniform_location(name), 1, glm::value_ptr(value));
 		}
@@ -202,9 +251,14 @@ namespace Lys
 		 * @param name The name of the uniform variable.
 		 * @param value The fvec4 value to set.
 		 */
-		void set_uniform_float4(const std::string& name, const glm::fvec4& value) const override
+		void set_uniform(const std::string& name, const glm::vec4& value) const override
 		{
 			glUniform4fv(get_uniform_location(name), 1, glm::value_ptr(value));
+		}
+
+		void set_uniform(const std::string& name, const double value) const override
+		{
+			glUniform1d(get_uniform_location(name), value);
 		}
 
 		/**
@@ -213,7 +267,7 @@ namespace Lys
 		 * @param name The name of the uniform variable.
 		 * @param value The boolean value to set.
 		 */
-		void set_uniform_bool(const std::string& name, const bool value) const override
+		void set_uniform(const std::string& name, const bool value) const override
 		{
 			glUniform1i(get_uniform_location(name), value);
 		}
@@ -226,12 +280,21 @@ namespace Lys
 		 */
 		[[nodiscard]] int get_uniform_location(const std::string& name) const override
 		{
-			int location = glGetUniformLocation(m_id, name.c_str());
+			const int location = glGetUniformLocation(m_id, name.c_str());
+
 			if (location == -1)
 			{
-				std::cerr << "Warning: uniform \"" << name << "\" doesn't exist!\n";
+				std::println(std::cerr, "Warning: uniform \"{0}\" doesn't exist!\n", name);
 			}
+
 			return location;
+		}
+
+	private:
+		void attach(const std::shared_ptr<IShader>& shader) const
+		{
+			shader->compile();
+			glAttachShader(m_id, shader->get_id());
 		}
 	};
 } // namespace Lys

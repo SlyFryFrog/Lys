@@ -12,10 +12,12 @@ namespace Lys
 	export class App
 	{
 	protected:
-		Window m_window{};
+		Window m_window;
 
 	public:
-		App() = default;
+		explicit App() : m_window(400, 400, "Project")
+		{}
+
 		virtual ~App()
 		{
 			m_window.terminate();
@@ -24,7 +26,6 @@ namespace Lys
 
 		virtual void init()
 		{
-			m_window = Window(100, 100, "Lys Engine");
 			m_window.init();
 			Rendering::init();
 
@@ -36,6 +37,7 @@ namespace Lys
 			while (!m_window.is_done())
 			{
 				m_window.swap_buffers();
+				Window::clear_buffer();
 				Window::poll_events();
 
 				if (InputManager::is_ordered_combo_hold({KEY_ESCAPE, KEY_SHIFT}))

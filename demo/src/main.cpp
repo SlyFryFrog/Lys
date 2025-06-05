@@ -15,6 +15,19 @@ class DemoApp final : public App
 public:
 	DemoApp() = default;
 
+	void init() override
+	{
+		App::init();
+
+		m_window.set_title("Lys Demo");
+
+		m_window.set_windowed(1024, 768);
+		m_window.set_cursor_status(true);
+
+		// m_window.set_fullscreen();
+		m_window.show();
+	}
+
 	void process() override
 	{
 		// JuliaEngine::load_script("/Users/marcus/dev/Lys/src/core/scripting/julia/bindings/lys.jl");
@@ -31,12 +44,13 @@ public:
 		// args.clear();
 		// auto result = JuliaEngine::call_function("Player", "get_node_type", nullptr);
 
-		draw_square();
-
 		while (!m_window.is_done())
 		{
 			m_window.swap_buffers();
+			Window::clear_buffer();
 			Window::poll_events();
+
+			draw_square();
 
 			if (InputManager::is_ordered_combo_hold({Key::KEY_ESCAPE, Key::KEY_SHIFT}))
 			{

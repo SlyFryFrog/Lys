@@ -4,13 +4,14 @@
         {
             "name": "abstract",
             "hidden": true,
-            "binaryDir": "${sourceDir}/out/build",
+            "binaryDir": "${sourceDir}/build",
             "generator": "Ninja",
             "cacheVariables": {
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "1"
             },
             "environment": {
-                "VCPKG_ROOT": "/home/marcus/.vcpkg"
+                "VCPKG_ROOT": "/Users/marcus/.vcpkg-clion/vcpkg"
             }
         },
         {
@@ -18,10 +19,8 @@
             "name": "Debug",
             "displayName": "Debug",
             "description": "Sets Ninja generator, build and install directory",
-            "binaryDir": "${sourceDir}/out/build/Debug",
-            "hidden": true,
+            "binaryDir": "${sourceDir}/build/Debug",
             "cacheVariables": {
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "1",
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CXXWRAP_PREFIX_PATH": "/home/marcus/.julia/artifacts/6e0e408a98cae471e66ce1421715059b8f6d1cfd"
             }
@@ -31,26 +30,9 @@
             "name": "Release",
             "displayName": "Release",
             "description": "Sets Ninja generator, build and install directory",
-            "binaryDir": "${sourceDir}/out/Release",
-            "hidden": true,
+            "binaryDir": "${sourceDir}/build/Release",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
-            }
-        },
-        {
-            "inherits": "Debug",
-            "name": "Debug Vulkan",
-            "displayName": "Debug Vulkan",
-            "cacheVariables": {
-                "USE_VULKAN": "1"
-            }
-        },
-        {
-            "inherits": "Debug",
-            "displayName": "Debug OpenGL",
-            "name": "Debug OpenGL",
-            "cacheVariables": {
-                "USE_VULKAN": "0"
             }
         }
     ]
