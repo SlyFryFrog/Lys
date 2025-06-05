@@ -26,22 +26,33 @@ git clone git@github.com:SlyFryFrog/Lys.git
 
 2. **Run CMake Preset**
 
-Before running the preset, it is necessary to configure the `CMakeUserPresets.json`. An example of what this may look like is as follows.
+Before running the preset, it is necessary to configure the `CMakeUserPresets.json`. An example of what this may look like on linux is as follows.
 
 ```json
 {
   "version": 8,
   "configurePresets": [
     {
-      "name": "user config",
+      "name": "config",
       "inherits": "abstract",
       "hidden": true,
       "environment": {
         "VCPKG_ROOT": "PATH"
       },
       "cacheVariables": {
-        "CXXWRAP_PREFIX_PATH": "PATH"
+        "CMAKE_C_COMPILER": "/usr/bin/clang",
+        "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+        "CMAKE_C_FLAGS": "-stdlib=libc++",
+        "CMAKE_CXX_FLAGS": "-stdlib=libc++"
       }
+    },
+    {
+      "name": "DebugLinux",
+      "inherits": ["config", "Debug"]
+    },
+    {
+      "name": "ReleaseLinux",
+      "inherits": ["config", "Release"]
     }
   ]
 }

@@ -1,6 +1,8 @@
 module;
 #include <glm/glm.hpp>
 #include <string>
+#include <vector>
+#include <memory>
 export module lys.rendering.shader;
 
 import lys.core.io.file;

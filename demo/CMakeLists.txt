@@ -3,6 +3,9 @@ project(Demo)
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp)
 file(GLOB_RECURSE MODULES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm)
 
+find_package(GLEW REQUIRED)
+find_package(OpenGL REQUIRED)
+
 if (LYS_CUSTOM_MAIN)
     add_executable(${PROJECT_NAME} ${SOURCES})
     
@@ -10,6 +13,8 @@ if (LYS_CUSTOM_MAIN)
         ${PROJECT_NAME} 
         PRIVATE 
             Lys
+            GLEW::GLEW
+            OpenGL::GL
     )
 else()
     # TODO - Do nothing for now
@@ -29,5 +34,8 @@ else()
 endif()
 
 target_sources(${PROJECT_NAME} PUBLIC FILE_SET allModules TYPE CXX_MODULES FILES ${MODULES})
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/scripts)
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/rsc DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/scripts DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

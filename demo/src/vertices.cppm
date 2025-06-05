@@ -1,7 +1,6 @@
 module;
 #include <array>
 #include <memory>
-#include <print>
 #include <GL/glew.h>
 export module vertices;
 
@@ -10,7 +9,7 @@ import lys.opengl;
 using namespace Lys;
 
 
-export std::array<float, 2> cube_vertices = {
+export std::array<std::array<float, 3>, 18> cube_vertices = {
 
 };
 
@@ -37,8 +36,8 @@ unsigned int indices[] = {  // note that we start from 0!
 export void draw_square()
 {
 	// Load shaders
-	auto vertex = std::make_shared<GLShader>(Vertex, "/Users/marcus/dev/Lys/demo/shaders/vert_test.vert");
-	auto frag = std::make_shared<GLShader>(Fragment, "/Users/marcus/dev/Lys/demo/shaders/frag_test.frag");
+	auto vertex = std::make_shared<GLShader>(Vertex, "shaders/vert_test.vert");
+	auto frag = std::make_shared<GLShader>(Fragment, "shaders/frag_test.frag");
 	GLShaderProgram shaderProgram({vertex, frag});
 	shaderProgram.link();
 
@@ -55,8 +54,7 @@ export void draw_square()
 	glEnableVertexAttribArray(0);
 
 	glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-	//glDrawArrays(GL_TRIANGLES, 0, 6);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	// Use shader and draw
 	shaderProgram.bind();

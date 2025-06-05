@@ -3,6 +3,8 @@ module;
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <memory>
+#include <vector>
 #include <print>
 #include <string>
 export module lys.opengl.gl_shader;

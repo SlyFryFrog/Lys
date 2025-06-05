@@ -1,22 +1,16 @@
 cmake_minimum_required(VERSION 3.31)
 project(Lys LANGUAGES CXX)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Compiler settings
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if (LINUX)
-    # Append -fPIC to CMAKE_CXX_FLAGS for shared library compilation
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-endif()
-
 # Options
 option(BUILD_DEMO "Build the demo project" ON)
 option(LYS_CUSTOM_MAIN "Use a custom main entry point" ON)
 
-# --- START: Julia and JlCxx setup ---
+# <-- Start: Julia and JlCxx setup -->
 
 # if(NOT CXXWRAP_PREFIX_PATH)
 #     message(FATAL_ERROR "CXXWRAP_PREFIX_PATH is not set. Please provide it using -DCXXWRAP_PREFIX_PATH=<path_from_CxxWrap.prefix_path()>")
@@ -37,7 +31,7 @@ option(LYS_CUSTOM_MAIN "Use a custom main entry point" ON)
 # include_directories(${JULIA_DIR}/include/julia) # Include Julia's headers
 # link_directories(${JULIA_DIR}/lib) # Link Julia's libraries
 
-# --- END: Julia and JlCxx setup ---
+# <-- End: Julia and JlCxx setup -->
 
 # External libraries
 find_package(glm CONFIG REQUIRED)
@@ -45,7 +39,7 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 
-# <-- Vulkan setup -->
+# <-- Start: Vulkan setup -->
 find_package(Vulkan REQUIRED)
 find_package(VulkanHeaders CONFIG REQUIRED)
 
@@ -56,7 +50,7 @@ if( ${Vulkan_VERSION} VERSION_LESS "1.3.256" )
   )
 endif()
 
-# set up Vulkan C++ module as a library
+# Set up Vulkan C++ module as a library
 add_library(VulkanHppModule)
 target_sources(VulkanHppModule 
     PUBLIC
@@ -64,9 +58,9 @@ target_sources(VulkanHppModule
         BASE_DIRS ${Vulkan_INCLUDE_DIR}
         FILES ${Vulkan_INCLUDE_DIR}/vulkan/vulkan.cppm
 )
-target_compile_features(VulkanHppModule PUBLIC cxx_std_23)
+
 target_link_libraries(VulkanHppModule PRIVATE Vulkan::Vulkan Vulkan::Headers)
-# <-- End of vulkan setup -->
+# <-- End: vulkan setup -->
 
 # Source files
 file(GLOB_RECURSE SOURCES
@@ -101,7 +95,6 @@ if (MODULES)
     )
 endif()
 
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 
 if (APPLE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE GL_SILENCE_DEPRECATION)
@@ -109,8 +102,7 @@ endif()
 
 target_link_libraries(
     ${PROJECT_NAME}
-    # PRIVATE
-    PUBLIC
+    PRIVATE
         glm::glm
         glfw
         VulkanHppModule

@@ -18,7 +18,7 @@ constexpr bool enableValidationLayers = true;
 
 namespace Lys
 {
-	export class VkRenderer : public IRenderer
+	export class VkRenderer final : public IRenderer
 	{
 		vk::Instance m_instance{};
 
@@ -99,8 +99,7 @@ namespace Lys
 		static std::vector<const char*> get_required_extensions()
 		{
 			uint32_t glfwExtensionCount = 0;
-			const char** glfwExtensions;
-			glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+			const char** glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 
 			std::vector<const char*> extensions(glfwExtensions,
 												glfwExtensions + glfwExtensionCount);
