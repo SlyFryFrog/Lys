@@ -26,6 +26,27 @@ git clone git@github.com:SlyFryFrog/Lys.git
 
 2. **Run CMake Preset**
 
+Before running the preset, it is necessary to configure the `CMakeUserPresets.json`. An example of what this may look like is as follows.
+
+```json
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "user config",
+      "inherits": "abstract",
+      "hidden": true,
+      "environment": {
+        "VCPKG_ROOT": "PATH"
+      },
+      "cacheVariables": {
+        "CXXWRAP_PREFIX_PATH": "PATH"
+      }
+    }
+  ]
+}
+```
+
 The template has 2 presets, Debug and Release.
 
 ```
@@ -35,4 +56,5 @@ cmake --preset Debug
 ```
 cmake --preset Release
 ```
+
 
