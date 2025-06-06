@@ -9,28 +9,24 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Options
 option(BUILD_DEMO "Build the demo project" ON)
 option(LYS_CUSTOM_MAIN "Use a custom main entry point" ON)
+option(BUILD_SCRIPTING_SUPPORT "Enable Julia/JlCxx scripting support" ON)
 
 # <-- Start: Julia and JlCxx setup -->
-
-# if(NOT CXXWRAP_PREFIX_PATH)
-#     message(FATAL_ERROR "CXXWRAP_PREFIX_PATH is not set. Please provide it using -DCXXWRAP_PREFIX_PATH=<path_from_CxxWrap.prefix_path()>")
-# endif()
-
-# # Prepend our specific CXXWRAP_PREFIX_PATH to CMAKE_PREFIX_PATH
-# # This makes find_package aware of where to look for JlCxx
-# list(APPEND CMAKE_PREFIX_PATH "${CXXWRAP_PREFIX_PATH}")
-
-# # Find JlCxx (which is part of CxxWrap.jl's C++ components)
-# find_package(JlCxx REQUIRED)
-
-# if (LINUX)
-#     set(JULIA_DIR /home/marcus/.julia/juliaup/julia-1.11.5+0.x64.linux.gnu)
-# else()
-#     set(JULIA_DIR /opt/homebrew/Cellar/julia/1.11.5)
-# endif()
-# include_directories(${JULIA_DIR}/include/julia) # Include Julia's headers
-# link_directories(${JULIA_DIR}/lib) # Link Julia's libraries
-
+#if(BUILD_SCRIPTING_SUPPORT)
+#     if(NOT CXXWRAP_PREFIX_PATH)
+#         message(FATAL_ERROR "CXXWRAP_PREFIX_PATH is not set. Please provide it using -DCXXWRAP_PREFIX_PATH=<path_from_CxxWrap.prefix_path()>")
+#     endif()
+#
+#     # Prepend our specific CXXWRAP_PREFIX_PATH to CMAKE_PREFIX_PATH
+#     # This makes find_package aware of where to look for JlCxx
+#     list(APPEND CMAKE_PREFIX_PATH "${CXXWRAP_PREFIX_PATH}")
+#
+#     # Find JlCxx (which is part of CxxWrap.jl's C++ components)
+#     find_package(JlCxx REQUIRED)
+#
+#     include_directories(${JULIA_DIR}/include/julia) # Include Julia's headers
+#     link_directories(${JULIA_DIR}/lib) # Link Julia's libraries
+#endif()
 # <-- End: Julia and JlCxx setup -->
 
 # External libraries
@@ -52,7 +48,7 @@ endif()
 
 # Set up Vulkan C++ module as a library
 add_library(VulkanHppModule)
-target_sources(VulkanHppModule 
+target_sources(VulkanHppModule
     PUBLIC
         FILE_SET CXX_MODULES
         BASE_DIRS ${Vulkan_INCLUDE_DIR}
@@ -87,10 +83,10 @@ endif()
 # Add modules
 if (MODULES)
     target_sources(
-        ${PROJECT_NAME} 
-        PUBLIC 
-            FILE_SET allModules 
-            TYPE CXX_MODULES 
+        ${PROJECT_NAME}
+        PUBLIC
+            FILE_SET allModules
+            TYPE CXX_MODULES
             FILES ${MODULES}
     )
 endif()
@@ -108,9 +104,8 @@ target_link_libraries(
         VulkanHppModule
         OpenGL::GL
         GLEW::GLEW
-    # PUBLIC
-    #     julia
-    #     JlCxx::cxxwrap_julia
+#        julia
+#        JlCxx::cxxwrap_julia
 )
 
 # Include directories
