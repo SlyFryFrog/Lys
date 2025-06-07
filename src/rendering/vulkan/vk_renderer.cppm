@@ -6,8 +6,8 @@ module;
 #include "vulkan/vulkan_core.h"
 export module lys.vulkan.vk_renderer;
 
+export import lys.rendering.renderer;
 import vulkan_hpp;
-import renderer;
 
 // Enable Vulkan debugging while in Debug mode
 #ifdef NDEBUG

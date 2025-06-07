@@ -93,7 +93,8 @@ namespace Lys
 
 			for (const auto& shader : m_shaders)
 			{
-				attach(shader);
+				shader->compile();
+				glAttachShader(m_id, shader->get_id());
 			}
 
 			glLinkProgram(m_id);
@@ -290,13 +291,6 @@ namespace Lys
 			}
 
 			return location;
-		}
-
-	private:
-		void attach(const std::shared_ptr<IShader>& shader) const
-		{
-			shader->compile();
-			glAttachShader(m_id, shader->get_id());
 		}
 	};
 } // namespace Lys

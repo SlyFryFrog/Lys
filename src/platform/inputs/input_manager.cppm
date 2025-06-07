@@ -20,7 +20,7 @@ namespace Lys
 		static std::queue<std::shared_ptr<InputEvent>> m_recentQueue;
 		static std::map<Key, std::shared_ptr<InputEvent>> m_events; // Register events for quick
 																	// access
-		static const size_t MAX_RECENT_QUEUE = 10;
+		static constexpr size_t MAX_RECENT_QUEUE = 10;
 
 	public:
 		static void _process_input_callback(GLFWwindow* window, int key, int scancode, int action,
@@ -185,6 +185,7 @@ namespace Lys
 					}
 				}
 
+				// Iterate through each Key, InputEvent
 				for (const auto& pair : m_events)
 				{
 					bool inCombo = false;
@@ -196,6 +197,7 @@ namespace Lys
 							break;
 						}
 					}
+
 					if (!inCombo && pair.second->is_pressed())
 					{
 						return false; // Another key is pressed

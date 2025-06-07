@@ -1,22 +1,18 @@
 module;
 #include <iostream>
+#include <print>
 export module lys.rendering;
 
 import lys.utils;
-
-#ifdef USE_VULKAN
-import lys.vulkan.vk_renderer;
-using Renderer = Lys::VkRenderer;
-#else
 import lys.opengl.gl_renderer;
-using Renderer = Lys::GLRenderer;
-#endif
+import lys.vulkan.vk_renderer;
+
 
 namespace Lys
 {
 	export class Rendering
 	{
-		static Renderer* m_renderer;
+		static IRenderer* m_renderer;
 
 	public:
 		Rendering() = default;
@@ -26,13 +22,27 @@ namespace Lys
 		 */
 		static void init()
 		{
-			m_renderer = new Renderer();
+#ifdef USE_VULKAN
+			m_renderer = new VkRenderer();
+#else
+			m_renderer = new GLRenderer();
+#endif
+
+			if (m_renderer == nullptr)
+			{
+				std::println(
+					std::cerr,
+					"Failed to initiate Renderer: Cannot initiate nullptr for render class: {}\n",
+					class_name(m_renderer).get());
+				return;
+			}
+
 			m_renderer->init();
 
-			std::cout << "Render class: " <<  class_name(m_renderer).get() << "\n";
+			std::println("Render class: {}\n", class_name(m_renderer).get());
 		}
 
-		static Renderer& get_renderer_singleton()
+		static IRenderer& get_renderer_singleton()
 		{
 			return *m_renderer;
 		}
@@ -46,5 +56,5 @@ namespace Lys
 		}
 	};
 
-	Renderer* Rendering::m_renderer = nullptr;
+	IRenderer* Rendering::m_renderer = nullptr;
 } // namespace Lys

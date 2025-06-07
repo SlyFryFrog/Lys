@@ -3,7 +3,7 @@ module;
 #include <print>
 export module lys.opengl.gl_renderer;
 
-import renderer;
+export import lys.rendering.renderer;
 import lys.opengl.gl_shader;
 
 namespace Lys

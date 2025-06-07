@@ -17,11 +17,11 @@ namespace Lys
 		{
 		}
 
-        explicit InputEvent(Key key, InputState state) : m_key(key), m_state(state)
+        explicit InputEvent(const Key key, const InputState state) : m_key(key), m_state(state)
 		{
 		}
 
-		bool operator==(Key key) const
+		bool operator==(const Key key) const
 		{
 			return m_key == key;
 		}

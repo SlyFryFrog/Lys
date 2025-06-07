@@ -21,10 +21,10 @@ public:
 
 		m_window.set_title("Lys Demo");
 
-		m_window.set_windowed(1024, 768);
+		// m_window.set_windowed(1024, 768);
+		m_window.set_fullscreen();
 		m_window.set_cursor_status(true);
 
-		// m_window.set_fullscreen();
 		m_window.show();
 	}
 

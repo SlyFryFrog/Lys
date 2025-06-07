@@ -7,8 +7,8 @@ module;
 #include <vulkan/vulkan.h>
 export module lys.platform.vk_window;
 
-import window_interface;
 import lys.rendering;
+import lys.platform.platform_interfaces;
 import lys.platform.input.input_manager;
 
 

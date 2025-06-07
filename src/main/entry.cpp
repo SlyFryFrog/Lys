@@ -1,6 +1,6 @@
 import lys.main.app;
 
-int main()
+int main()		// To-do: Add way of passing args via cmd
 {
     Lys::App app;
 

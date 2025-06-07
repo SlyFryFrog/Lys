@@ -1,5 +1,5 @@
 module Player
-push!(LOAD_PATH, "../../src/core/scripting/julia/bindings/lys.jl")
+push!(LOAD_PATH, "../../src/core/scripting/julia/bindings/lys.jl") # Bad way of finding lys.jl, fix me
 using ..Lys
 
 mutable struct Character <: Lys.Node

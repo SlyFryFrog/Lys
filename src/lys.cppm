@@ -12,6 +12,7 @@ export import lys.platform.input.input_manager;
 export import lys.platform.input.input_map;
 
 export import lys.rendering.shader;
+export import lys.opengl.gl_shader;
 
 export import lys.scene.node;
 export import lys.scene.node_2d;

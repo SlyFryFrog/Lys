@@ -4,7 +4,7 @@ module;
 #include <string>
 export module lys.platform.gl_window;
 
-import window_interface;
+import lys.platform.platform_interfaces;
 import lys.rendering;
 import lys.platform.input.input_manager;
 
@@ -28,7 +28,7 @@ namespace Lys
 		{
 			if (!glfwInit())
 			{
-				std::println("Failed to initialize glfw.");
+				std::println(std::cerr, "Failed to initialize glfw.");
 				return;
 			}
 
@@ -40,7 +40,7 @@ namespace Lys
 			if (!m_window)
 			{
 				glfwTerminate();
-				std::println("Failed to create Window instance! Terminating GLFW.");
+				std::println(std::cerr , "Failed to create Window instance! Terminating GLFW.");
 				return;
 			}
 

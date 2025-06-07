@@ -4,6 +4,8 @@ module;
 // #include <julia.h>
 export module lys.core.scripting.julia.julia_node_bindings;
 
+#warning Julia scripting was working on macOS, but due to stdlib issues on Linux, support has been removed for now.
+
 import lys.scene.node;
 import lys.scene.node_2d;
 import lys.scene.node_3d;

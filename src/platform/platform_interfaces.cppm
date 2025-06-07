@@ -1,7 +1,7 @@
 module;
 #include <GLFW/glfw3.h>
 #include <string>
-export module window_interface;
+export module lys.platform.platform_interfaces;
 
 import lys.rendering;
 import lys.platform.input.input_manager;
