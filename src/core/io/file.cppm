@@ -1,11 +1,12 @@
 module;
-#include <vector>
 #include <filesystem>
 #include <fstream>
 #include <ios>
 #include <iostream>
+#include <print>
 #include <sstream>
 #include <string>
+#include <vector>
 export module lys.core.io.file;
 
 namespace Lys
@@ -22,9 +23,9 @@ namespace Lys
 		}
 
 		/**
-		 * @brief
+		 * @brief Reads the contents of the path assigned to the File instance.
 		 *
-		 * @return std::string
+		 * @return std::string Contents stored in the file.
 		 */
 		[[nodiscard]] std::string read() const
 		{
@@ -51,13 +52,21 @@ namespace Lys
 			return ss.str();
 		}
 
-		[[nodiscard]] bool write(const std::string& contents, const std::ios::openmode operation) const
+		/**
+		 * @brief
+		 *
+		 * @param contents
+		 * @param operation
+		 * @return
+		 */
+		[[nodiscard]] bool write(const std::string& contents,
+								 const std::ios::openmode operation) const
 		{
 			std::ofstream file(m_path, operation);
 
 			if (!file)
 			{
-				std::cout << "Failed to open file: " + m_path;
+				std::println(std::cerr, "Failed to open file: {}", m_path);
 				return false;
 			}
 
@@ -67,7 +76,7 @@ namespace Lys
 		}
 
 		[[nodiscard]] bool write(const std::vector<std::uint8_t>& contents,
-				   const std::ios::openmode operation) const
+								 const std::ios::openmode operation) const
 		{
 			std::ofstream file(m_path, operation);
 
@@ -92,9 +101,14 @@ namespace Lys
 			return std::filesystem::file_size(m_path);
 		}
 
-		[[nodiscard]] std::filesystem::path path() const
+		[[nodiscard]] std::filesystem::path get_path() const
 		{
 			return m_path;
+		}
+
+		void set_path(const std::string& path)
+		{
+			m_path = path;
 		}
 	};
 } // namespace Lys

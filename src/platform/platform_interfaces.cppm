@@ -1,5 +1,6 @@
 module;
 #include <GLFW/glfw3.h>
+#include <print>
 #include <string>
 export module lys.platform.platform_interfaces;
 
@@ -125,11 +126,11 @@ namespace Lys
 				glfwDestroyWindow(m_window);
 
 				glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-				m_window = glfwCreateWindow(mode->width, mode->height, m_title.c_str(), monitor,
+				m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), monitor,
 											nullptr);
 
-				glViewport(0, 0, m_width, m_height);
 				set_glfw_window_defaults(m_window);
+				glViewport(0, 0, m_width, m_height);
 			}
 		}
 
@@ -142,7 +143,6 @@ namespace Lys
 			glfwDestroyWindow(m_window);
 
 			m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), nullptr, nullptr);
-			glViewport(0, 0, width, height);
 			set_glfw_window_defaults(m_window);
 		}
 
@@ -167,6 +167,7 @@ namespace Lys
 			glfwSetKeyCallback(window, InputManager::_process_input_callback);
 			glfwSetCursorPosCallback(window, InputManager::_process_mouse_callback);
 
+			glfwGetFramebufferSize(window, &m_width, &m_height);
 			frame_buffer_callback(window, m_width, m_height);
 		}
 	};

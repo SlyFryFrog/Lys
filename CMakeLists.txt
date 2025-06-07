@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.28)
 project(Lys LANGUAGES CXX)
 
 # Compiler settings
@@ -41,9 +41,9 @@ find_package(VulkanHeaders CONFIG REQUIRED)
 
 # Require Vulkan version ≥ 1.3.256 (earliest version when the Vulkan module was available)
 if( ${Vulkan_VERSION} VERSION_LESS "1.3.256" )
-  message( FATAL_ERROR "Minimum required Vulkan version for C++ modules is 1.3.256. "
+    message( FATAL_ERROR "Minimum required Vulkan version for C++ modules is 1.3.256. "
            "Found ${Vulkan_VERSION}."
-  )
+    )
 endif()
 
 # Set up Vulkan C++ module as a library
@@ -58,15 +58,13 @@ target_sources(VulkanHppModule
 target_link_libraries(VulkanHppModule PRIVATE Vulkan::Vulkan Vulkan::Headers)
 # <-- End: vulkan setup -->
 
-# Source files
+# Glob all headers, sources, and modules
 file(GLOB_RECURSE SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/macros.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/utils/macros.cpp
 )
 
-file(GLOB_RECURSE MODULES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm
-)
+file(GLOB_RECURSE MODULES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cppm)
 
 # Target: library or executable
 if (LYS_CUSTOM_MAIN)
@@ -106,13 +104,6 @@ target_link_libraries(
         GLEW::GLEW
 #        julia
 #        JlCxx::cxxwrap_julia
-)
-
-# Include directories
-target_include_directories(
-    ${PROJECT_NAME}
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
 # Subdirectories
