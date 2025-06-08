@@ -3,6 +3,8 @@ export module lys.rendering.renderer;
 
 namespace Lys
 {
+	export enum PolygonMode { FILL, LINE, POINT };
+
 	export class IRenderer
 	{
 	public:
@@ -14,5 +16,7 @@ namespace Lys
 		virtual void end_frame() = 0;
 		virtual void update_viewport(int width, int height) = 0;
 		virtual void shutdown() = 0;
+
+		virtual void set_polygon_mode(PolygonMode mode) = 0;
 	};
-}
+} // namespace Lys

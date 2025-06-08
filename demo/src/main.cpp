@@ -7,6 +7,7 @@ import lys;
 import demo.player;
 
 import vertices;
+#include <print>
 
 using namespace Lys;
 
@@ -21,11 +22,13 @@ public:
 
 		m_window.set_title("Lys Demo");
 
-		// m_window.set_windowed(1024, 768);
-		m_window.set_fullscreen();
+		m_window.set_windowed(1024, 768);
+		// m_window.set_fullscreen();
 		m_window.set_cursor_status(true);
 
 		m_window.show();
+		Rendering::set_polygon_mode(LINE);
+		std::println("{}", WorkingDirectory);
 	}
 
 	void process() override

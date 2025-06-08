@@ -1,6 +1,5 @@
 module;
 #include <GLFW/glfw3.h>
-#include <cstddef>
 #include <initializer_list>
 #include <iostream>
 #include <map>
@@ -23,7 +22,8 @@ namespace Lys
 		static constexpr size_t MAX_RECENT_QUEUE = 10;
 
 	public:
-		static void _process_input_callback(GLFWwindow* window, int key, int scancode, int action,
+		static void _process_input_callback(GLFWwindow* window, const int key, int scancode,
+											const int action,
 											int mods)
 		{
 			Key lysKey = convert_code(key);
@@ -212,7 +212,7 @@ namespace Lys
 
 	private:
 		/**
-		 * @brief Converts a integer code from GLFW to enum Key.
+		 * @brief Converts an integer code from GLFW to enum Key.
 		 *
 		 * @param key The GLFW key code.
 		 * @return Key The converted key.

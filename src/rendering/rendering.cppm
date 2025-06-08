@@ -1,4 +1,5 @@
 module;
+#include <GL/glew.h>
 #include <iostream>
 #include <print>
 export module lys.rendering;
@@ -6,7 +7,6 @@ export module lys.rendering;
 import lys.utils;
 import lys.opengl.gl_renderer;
 import lys.vulkan.vk_renderer;
-
 
 namespace Lys
 {
@@ -47,12 +47,17 @@ namespace Lys
 			return *m_renderer;
 		}
 
-		static void update_viewport(int width, int height)
+		static void update_viewport(const int width, const int height)
 		{
 			if (m_renderer)
 			{
 				m_renderer->update_viewport(width, height);
 			}
+		}
+
+		static void set_polygon_mode(const PolygonMode mode)
+		{
+			m_renderer->set_polygon_mode(mode);
 		}
 	};
 

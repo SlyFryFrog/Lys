@@ -2,6 +2,7 @@ module;
 #include <GLFW/glfw3.h>
 #include <print>
 #include <string>
+#include <utility>
 export module lys.platform.platform_interfaces;
 
 import lys.rendering;
@@ -21,15 +22,15 @@ namespace Lys
 	public:
 		IWindow() = default;
 
-		explicit IWindow(const std::string& title) : m_title(title)
+		explicit IWindow(std::string title) : m_title(std::move(title))
 		{
 		}
-		IWindow(const bool fullscreen, const std::string& title) :
-			m_title(title), m_fullscreen(fullscreen)
+		IWindow(const bool fullscreen, std::string  title) :
+			m_title(std::move(title)), m_fullscreen(fullscreen)
 		{
 		}
-		IWindow(const int width, const int height, const std::string& title) :
-			m_title(title), m_width(width), m_height(height)
+		IWindow(const int width, const int height, std::string  title) :
+			m_title(std::move(title)), m_width(width), m_height(height)
 		{
 		}
 
@@ -91,6 +92,18 @@ namespace Lys
 			return glfwWindowShouldClose(m_window);
 		}
 
+		void set_done(const bool status) const
+		{
+			if (status)
+			{
+				glfwSetWindowShouldClose(m_window, GLFW_TRUE);
+			}
+			else
+			{
+				glfwSetWindowShouldClose(m_window, GLFW_FALSE);
+			}
+		}
+
 		void set_title(const std::string& title)
 		{
 			m_title = title;
@@ -126,8 +139,7 @@ namespace Lys
 				glfwDestroyWindow(m_window);
 
 				glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-				m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), monitor,
-											nullptr);
+				m_window = glfwCreateWindow(m_width, m_height, m_title.c_str(), monitor, nullptr);
 
 				set_glfw_window_defaults(m_window);
 				glViewport(0, 0, m_width, m_height);

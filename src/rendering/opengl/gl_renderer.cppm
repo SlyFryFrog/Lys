@@ -55,5 +55,21 @@ namespace Lys
 		void shutdown() override
 		{
 		}
+
+		void set_polygon_mode(const PolygonMode mode) override
+		{
+			if (mode == FILL)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			}
+			else if (mode == POINT)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+			}
+			else if (mode == LINE)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+		}
 	};
 } // namespace Lys

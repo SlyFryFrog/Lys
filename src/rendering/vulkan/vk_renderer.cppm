@@ -50,6 +50,11 @@ namespace Lys
 		{
 		}
 
+		void set_polygon_mode(PolygonMode mode) override
+		{
+
+		}
+
 	private:
 		void create_vulkan_instance()
 		{

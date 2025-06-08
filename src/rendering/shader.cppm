@@ -51,22 +51,26 @@ namespace Lys
 		virtual void set_uniform(const std::string& name, const glm::mat3& value) const = 0;
 		virtual void set_uniform(const std::string& name, const glm::mat4& value) const = 0;
 
+		virtual void set_uniform(const std::string& name, float value) const = 0;
 		virtual void set_uniform(const std::string& name, const glm::vec2& value) const = 0;
 		virtual void set_uniform(const std::string& name, const glm::vec3& value) const = 0;
 		virtual void set_uniform(const std::string& name, const glm::vec4& value) const = 0;
 
+		virtual void set_uniform(const std::string& name, int value) const = 0;
 		virtual void set_uniform(const std::string& name, const glm::ivec2& value) const = 0;
 		virtual void set_uniform(const std::string& name, const glm::ivec3& value) const = 0;
 		virtual void set_uniform(const std::string& name, const glm::ivec4& value) const = 0;
 
+		virtual void set_uniform(const std::string& name, uint32_t value) const = 0;
 		virtual void set_uniform(const std::string& name, const glm::uvec2& value) const = 0;
 		virtual void set_uniform(const std::string& name, const glm::uvec3& value) const = 0;
 		virtual void set_uniform(const std::string& name, const glm::uvec4& value) const = 0;
 
-		virtual void set_uniform(const std::string& name, int value) const = 0;
-		virtual void set_uniform(const std::string& name, uint32_t value) const = 0;
-		virtual void set_uniform(const std::string& name, float value) const = 0;
 		virtual void set_uniform(const std::string& name, double value) const = 0;
+		virtual void set_uniform(const std::string& name, const glm::dvec2& value) const = 0;
+		virtual void set_uniform(const std::string& name, const glm::dvec3& value) const = 0;
+		virtual void set_uniform(const std::string& name, const glm::dvec4& value) const = 0;
+
 		virtual void set_uniform(const std::string& name, bool value) const = 0;
 
 		[[nodiscard]] virtual int get_uniform_location(const std::string& name) const = 0;

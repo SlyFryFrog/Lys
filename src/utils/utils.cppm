@@ -1,7 +1,12 @@
 module;
 #include <cstdlib>
 #include <cxxabi.h>
+#include <filesystem>
 #include <memory>
+#include <string>
+#ifdef __APPLE__
+#include <mach-o/dyld.h>
+#endif
 export module lys.utils;
 
 namespace Lys
@@ -29,4 +34,20 @@ namespace Lys
 	{
 		return cpp_demangle(typeid(*ptr).name());
 	}
+
+	std::filesystem::path get_executable_path()
+	{
+		char buffer[PATH_MAX];
+		uint32_t size = sizeof(buffer);
+#ifdef __APPLE__
+		if (_NSGetExecutablePath(buffer, &size) == 0)
+		{
+			return std::filesystem::canonical(buffer);
+		}
+#endif
+		return {}; // Handle failure
+	}
+
+
+	export const std::string WorkingDirectory = get_executable_path().parent_path();
 } // namespace Lys

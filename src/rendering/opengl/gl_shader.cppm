@@ -169,12 +169,12 @@ namespace Lys
 		}
 
 		/**
-		 * @brief Sets a uint (unsigned int) uniform variable in the shader program.
+		 * @brief Sets an uint (unsigned int) uniform variable in the shader program.
 		 *
 		 * @param name The name of the uniform variable.
 		 * @param value The uint value to set.
 		 */
-		void set_uniform(const std::string& name, unsigned int value) const override
+		void set_uniform(const std::string& name, const unsigned int value) const override
 		{
 			glUniform1ui(get_uniform_location(name), value);
 		}
@@ -262,6 +262,21 @@ namespace Lys
 		void set_uniform(const std::string& name, const double value) const override
 		{
 			glUniform1d(get_uniform_location(name), value);
+		}
+
+		void set_uniform(const std::string& name, const glm::dvec2& value) const override
+		{
+			glUniform2dv(get_uniform_location(name), 1, glm::value_ptr(value));
+		}
+
+		void set_uniform(const std::string& name, const glm::dvec3& value) const override
+		{
+			glUniform3dv(get_uniform_location(name), 1, glm::value_ptr(value));
+		}
+
+		void set_uniform(const std::string& name, const glm::dvec4& value) const override
+		{
+			glUniform4dv(get_uniform_location(name), 1, glm::value_ptr(value));
 		}
 
 		/**

@@ -27,17 +27,16 @@ float vertices[] = {
    -0.5f,  0.5f, 0.0f   // top left
 };
 
-unsigned int indices[] = {  // note that we start from 0!
+unsigned int indices[] = {
 	0, 1, 3,  // first Triangle
 	1, 2, 3   // second Triangle
 };
 
-
 export void draw_square()
 {
 	// Load shaders
-	auto vertex = std::make_shared<GLShader>(Vertex, "shaders/vert_test.vert");
-	auto frag = std::make_shared<GLShader>(Fragment, "shaders/frag_test.frag");
+	const auto vertex = std::make_shared<GLShader>(Vertex, "/shaders/vert_test.vert");
+	const auto frag = std::make_shared<GLShader>(Fragment, "/shaders/frag_test.frag");
 	GLShaderProgram shaderProgram({vertex, frag});
 	shaderProgram.link();
 

@@ -6,20 +6,34 @@ module;
 #include <print>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 export module lys.core.io.file;
+
+import lys.utils;
 
 namespace Lys
 {
 	export class File
 	{
 		std::string m_path;
+		bool m_relative{true};
 
 	public:
 		File() = default;
 
-		explicit File(const std::string& path) : m_path(path)
+		explicit File(const std::string& path) : m_path(WorkingDirectory + path)
 		{
+		}
+
+		explicit File(const std::string& path, const bool relative) : m_relative(relative)
+		{
+			if (!relative)
+			{
+				m_path = WorkingDirectory;
+			}
+
+			m_path += path;
 		}
 
 		/**
@@ -44,7 +58,7 @@ namespace Lys
 			std::ifstream file(path);
 			if (!file)
 			{
-				std::cout << "Failed to open file: " + path;
+				std::println(std::cerr, "Failed to open file: {}", path);
 			}
 
 			std::ostringstream ss;
@@ -82,7 +96,7 @@ namespace Lys
 
 			if (!file)
 			{
-				std::cout << "Failed to open file: " + m_path;
+				std::println(std::cerr, "Failed to open file: {}", m_path);
 				return false;
 			}
 
@@ -108,7 +122,12 @@ namespace Lys
 
 		void set_path(const std::string& path)
 		{
-			m_path = path;
+			if (!m_relative)
+			{
+				m_path = WorkingDirectory;
+			}
+
+			m_path += path;
 		}
 	};
 } // namespace Lys
