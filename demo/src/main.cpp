@@ -28,7 +28,6 @@ public:
 
 		m_window.show();
 		Rendering::set_polygon_mode(LINE);
-		std::println("{}", WorkingDirectory);
 	}
 
 	void process() override
