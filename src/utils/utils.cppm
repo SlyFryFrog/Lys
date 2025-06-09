@@ -1,17 +1,13 @@
 module;
-#include <cstdlib>
 #include <cxxabi.h>
 #include <filesystem>
 #include <memory>
 #include <string>
 
-#ifdef __APPLE__
+#if defined(__APPLE__)
 #include <mach-o/dyld.h>
-#elifdef __linux__
-#include <limits.h>
+#elif defined(__linux__)
 #include <unistd.h>
-#elifdef _WIN32
-#include <windows.h>
 #endif
 export module lys.utils;
 
@@ -43,26 +39,19 @@ namespace Lys
 
 	std::filesystem::path get_executable_path()
 	{
-#ifdef __APPLE__
+#if defined(__APPLE__)
 		char buffer[PATH_MAX];
 		uint32_t size = sizeof(buffer);
 		if (_NSGetExecutablePath(buffer, &size) == 0)
 		{
 			return std::filesystem::canonical(buffer);
 		}
-#elif __linux__
+#elif defined(__linux__)
 		char buffer[PATH_MAX];
 		ssize_t count = readlink("/proc/self/exe", buffer, sizeof(buffer));
 		if (count != -1)
 		{
 			return std::filesystem::canonical(std::string(buffer, count));
-		}
-#elif _WIN32
-		wchar_t buffer[MAX_PATH];
-		DWORD length = GetModuleFileNameW(nullptr, buffer, MAX_PATH);
-		if (length > 0 && length < MAX_PATH)
-		{
-			return std::filesystem::canonical(std::filesystem::path(buffer));
 		}
 #endif
 

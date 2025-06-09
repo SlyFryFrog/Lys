@@ -32,8 +32,8 @@ option(BUILD_SCRIPTING_SUPPORT "Enable Julia/JlCxx scripting support" ON)
 # External libraries
 find_package(glm CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
+find_package(GLEW CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
 
 # <-- Start: Vulkan setup -->
 find_package(Vulkan REQUIRED)
