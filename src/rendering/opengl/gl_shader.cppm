@@ -12,18 +12,18 @@ export module lys.opengl.gl_shader;
 export import lys.rendering.shader;
 import lys.core.io.file;
 
-namespace Lys
+namespace Lys::GL
 {
-	export class GLShader final : public IShader
+	export class Shader final : public IShader
 	{
 	public:
-		explicit GLShader(const ShaderType type, const std::string& file) : IShader()
+		explicit Shader(const ShaderType type, const std::string& file) : IShader()
 		{
 			m_type = type;
 			m_source = File(file);
 		}
 
-		~GLShader() override = default;
+		~Shader() override = default;
 
 		void compile() override
 		{
@@ -70,17 +70,17 @@ namespace Lys
 	};
 
 
-	export class GLShaderProgram final : public IShaderProgram
+	export class ShaderProgram final : public IShaderProgram
 	{
 	public:
-		GLShaderProgram() = default;
+		ShaderProgram() = default;
 
-		explicit GLShaderProgram(const std::vector<std::shared_ptr<IShader>>& shaders) : IShaderProgram()
+		explicit ShaderProgram(const std::vector<std::shared_ptr<IShader>>& shaders) : IShaderProgram()
 		{
 			m_shaders = shaders;
 		}
 
-		~GLShaderProgram() override = default;
+		~ShaderProgram() override = default;
 
 		void link() override
 		{

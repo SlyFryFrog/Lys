@@ -22,38 +22,37 @@ namespace Lys
 		static constexpr size_t MAX_RECENT_QUEUE = 10;
 
 	public:
-		static void _process_input_callback(GLFWwindow* window, const int key, int scancode,
+		static void _process_input_callback(GLFWwindow* window, const int key, const int scancode,
 											const int action,
-											int mods)
+											const int mods)
 		{
 			Key lysKey = convert_code(key);
 			InputState state;
 
 			if (action == GLFW_PRESS && !m_events.contains(lysKey))
 			{
-				std::cout << "Size: " << m_recentQueue.size() << "\n";
-				state = InputState::JUST_PRESSED;
+				state = JUST_PRESSED;
 			}
 			else if (action == GLFW_RELEASE)
 			{
-				state = InputState::JUST_RELEASED;
+				state = JUST_RELEASED;
 			}
 			else if (action == GLFW_REPEAT)
 			{
-				if (m_events[lysKey]->get_state() == InputState::JUST_PRESSED)
+				if (m_events[lysKey]->get_state() == JUST_PRESSED)
 				{
-					m_events[lysKey]->set_state(InputState::PRESSED);
+					m_events[lysKey]->set_state(PRESSED);
 				}
 				else
 				{
-					m_events[lysKey]->set_state(InputState::RELEASED);
+					m_events[lysKey]->set_state(RELEASED);
 				}
 			}
 
 			std::shared_ptr<InputEvent> event = std::make_shared<InputEvent>(lysKey, state);
 
 			// Add to recent queue if just pressed
-			if (state == InputState::JUST_PRESSED)
+			if (state == JUST_PRESSED)
 			{
 				m_recentQueue.push(event);
 
@@ -67,7 +66,7 @@ namespace Lys
 			m_events[lysKey] = event;
 		}
 
-		static void _process_mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+		static void _process_mouse_callback(GLFWwindow* window, const double xposIn, const double yposIn)
 		{
 		}
 
@@ -99,7 +98,7 @@ namespace Lys
 			clear_recent_queue();
 		}
 
-		static bool is_pressed(Key key)
+		static bool is_pressed(const Key key)
 		{
 			if (!m_events.contains(key))
 			{
@@ -109,7 +108,7 @@ namespace Lys
 			return m_events[key]->is_pressed();
 		}
 
-		static bool is_just_pressed(Key key)
+		static bool is_just_pressed(const Key key)
 		{
 			if (!m_events.contains(key))
 			{
@@ -119,7 +118,7 @@ namespace Lys
 			return m_events[key]->is_just_pressed();
 		}
 
-		static bool is_just_released(Key key)
+		static bool is_just_released(const Key key)
 		{
 			if (!m_events.contains(key))
 			{
@@ -129,7 +128,7 @@ namespace Lys
 			return m_events[key]->is_just_released();
 		}
 
-		static bool is_released(Key key)
+		static bool is_released(const Key key)
 		{
 			return !m_events.contains(key);
 		}

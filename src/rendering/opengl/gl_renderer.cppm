@@ -6,13 +6,13 @@ export module lys.opengl.gl_renderer;
 export import lys.rendering.renderer;
 import lys.opengl.gl_shader;
 
-namespace Lys
+namespace Lys::GL
 {
-	export class GLRenderer final : public IRenderer
+	export class Renderer final : public IRenderer
 	{
 	public:
-		GLRenderer() = default;
-		~GLRenderer() override = default;
+		Renderer() = default;
+		~Renderer() override = default;
 
 		void init() override
 		{

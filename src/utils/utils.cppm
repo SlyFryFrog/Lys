@@ -13,7 +13,7 @@ export module lys.utils;
 
 namespace Lys
 {
-	export std::shared_ptr<char> cpp_demangle(const char* abiName)
+	std::shared_ptr<char> cpp_demangle(const char* abiName)
 	{
 		int status;
 		char* ret = abi::__cxa_demangle(abiName, nullptr, nullptr, &status);
@@ -37,6 +37,13 @@ namespace Lys
 		return cpp_demangle(typeid(*ptr).name());
 	}
 
+	/**
+	 * @brief Returns the absolute path to the running executable.
+	 *
+	 * @return Absolute path to the executable.
+	 *
+	 * @note Works on macOS and Linux. Returns an empty path on failure.
+	 */
 	std::filesystem::path get_executable_path()
 	{
 #if defined(__APPLE__)
@@ -58,6 +65,8 @@ namespace Lys
 		return {}; // Handle failure
 	}
 
-
+	/**
+	 * @brief Current working directory where the executable is located.
+	 */
 	export const std::string WorkingDirectory = get_executable_path().parent_path();
 } // namespace Lys

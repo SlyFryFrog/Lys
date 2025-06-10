@@ -25,7 +25,7 @@ namespace Lys
 #ifdef USE_VULKAN
 			m_renderer = new VkRenderer();
 #else
-			m_renderer = new GLRenderer();
+			m_renderer = new GL::Renderer();
 #endif
 
 			if (m_renderer == nullptr)

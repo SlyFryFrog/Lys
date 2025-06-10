@@ -8,12 +8,12 @@ namespace Lys
 	export class InputEvent
 	{
 		Key m_key{};
-        InputState m_state{InputState::RELEASED};
+        InputState m_state{RELEASED};
 
 	public:
 		InputEvent() = default;
 
-		explicit InputEvent(Key key) : m_key(key)
+		explicit InputEvent(const Key key) : m_key(key)
 		{
 		}
 
@@ -46,7 +46,7 @@ namespace Lys
             return m_state == InputState::JUST_RELEASED;
         }
 
-        void set_state(InputState state)
+        void set_state(const InputState state)
         {
             m_state = state;
         }
