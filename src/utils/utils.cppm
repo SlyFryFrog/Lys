@@ -6,8 +6,6 @@ module;
 
 #if defined(__APPLE__)
 #include <mach-o/dyld.h>
-#elif defined(__linux__)
-#include <unistd.h>
 #endif
 export module lys.utils;
 
@@ -44,29 +42,24 @@ namespace Lys
 	 *
 	 * @note Works on macOS and Linux. Returns an empty path on failure.
 	 */
-	std::filesystem::path get_executable_path()
+	std::filesystem::path get_working_directory()
 	{
+		// MacOS doesn't use the pwd of the executable when launching from clicking on the
+		// executable directly.
 #if defined(__APPLE__)
 		char buffer[PATH_MAX];
 		uint32_t size = sizeof(buffer);
 		if (_NSGetExecutablePath(buffer, &size) == 0)
 		{
-			return std::filesystem::canonical(buffer);
-		}
-#elif defined(__linux__)
-		char buffer[PATH_MAX];
-		ssize_t count = readlink("/proc/self/exe", buffer, sizeof(buffer));
-		if (count != -1)
-		{
-			return std::filesystem::canonical(std::string(buffer, count));
+			return std::filesystem::canonical(buffer).parent_path();
 		}
 #endif
-
-		return {}; // Handle failure
+		// Default implementation
+		return std::filesystem::current_path().string();
 	}
 
 	/**
 	 * @brief Current working directory where the executable is located.
 	 */
-	export const std::string WorkingDirectory = get_executable_path().parent_path();
+	export const std::string WorkingDirectory = get_working_directory();
 } // namespace Lys

@@ -4,10 +4,10 @@
 // #include <vector>
 
 import lys;
-import demo.player;
+import lys.opengl;
 
+import demo.player;
 import vertices;
-#include <print>
 
 using namespace Lys;
 
@@ -27,7 +27,6 @@ public:
 		m_window.set_cursor_status(true);
 
 		m_window.show();
-		Rendering::set_polygon_mode(LINE);
 	}
 
 	void process() override
@@ -45,6 +44,7 @@ public:
 		// JuliaEngine::call_function("Player", "process", &args);
 		// args.clear();
 		// auto result = JuliaEngine::call_function("Player", "get_node_type", nullptr);
+		PolygonMode mode = FILL;
 
 		while (!m_window.is_done())
 		{
@@ -54,14 +54,28 @@ public:
 
 			draw_square();
 
-			if (InputManager::is_ordered_combo_hold({Key::KEY_ESCAPE, Key::KEY_SHIFT}))
+			if (InputManager::is_ordered_combo_hold({KEY_SHIFT, KEY_ESCAPE}))
 			{
 				break;
 			}
 
-			if (InputManager::is_just_pressed(Key::KEY_ESCAPE))
+			if (InputManager::is_just_pressed(KEY_0))
 			{
-				break;
+				switch (mode)
+				{
+				case FILL:
+					mode = LINE;
+					Rendering::set_polygon_mode(mode);
+					break;
+				case LINE:
+					mode = POINT;
+					Rendering::set_polygon_mode(mode);
+					break;
+				default:
+					mode = FILL;
+					Rendering::set_polygon_mode(mode);
+					break;
+				}
 			}
 
 			InputManager::_process();
