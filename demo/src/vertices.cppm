@@ -16,13 +16,17 @@ float vertices[] = {
    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f  // top left
 };
 
+float offSet = 0.0f;
+
 unsigned int indices[] = {
 	0, 1, 3, // first Triangle
 	1, 2, 3	 // second Triangle
 };
 
-export void draw_square()
+export void draw_square(double delta)
 {
+	offSet += delta;
+
 	// Load shaders
 	const auto vertex = std::make_shared<GL::Shader>(Vertex, "/shaders/vert_test.vert");
 	const auto frag = std::make_shared<GL::Shader>(Fragment, "/shaders/frag_test.frag");
@@ -47,6 +51,7 @@ export void draw_square()
 	// Use shader and draw
 	shaderProgram.bind();
 	{
+		shaderProgram.set_uniform("uOffset", offSet);
 		vao.bind();
 		glDrawArrays(GL_TRIANGLES, 0, 18);
 		vao.unbind();

@@ -106,7 +106,7 @@ namespace Lys::GL
 			{
 				char infoLog[512];
 				glGetProgramInfoLog(m_id, 512, nullptr, infoLog);
-				std::println("Shader program linking failed: {0}", std::string(infoLog));
+				std::println("Shader program linking failed: {}", std::string(infoLog));
 			}
 
 			for (const auto& shader : m_shaders)

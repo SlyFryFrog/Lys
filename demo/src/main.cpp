@@ -45,6 +45,8 @@ public:
 		// args.clear();
 		// auto result = JuliaEngine::call_function("Player", "get_node_type", nullptr);
 		PolygonMode mode = FILL;
+		Timer deltaTimer;
+		deltaTimer.start();
 
 		while (!m_window.is_done())
 		{
@@ -52,9 +54,11 @@ public:
 			Window::clear_buffer();
 			Window::poll_events();
 
-			draw_square();
+			double delta = deltaTimer.delta();
 
-			if (InputManager::is_ordered_combo_hold({KEY_SHIFT, KEY_ESCAPE}))
+			draw_square(delta);
+
+			if (InputManager::is_ordered_combo_hold({KEY_LEFT_SHIFT, KEY_ESCAPE}))
 			{
 				break;
 			}

@@ -1,7 +1,6 @@
 module;
 #include <GLFW/glfw3.h>
 #include <initializer_list>
-#include <iostream>
 #include <map>
 #include <memory>
 #include <queue>
@@ -12,7 +11,6 @@ export import lys.platform.input.input_map;
 
 namespace Lys
 {
-
 	export class InputManager
 	{
 		static std::queue<std::shared_ptr<InputEvent>> m_eventQueue; // Put events in order
@@ -23,10 +21,9 @@ namespace Lys
 
 	public:
 		static void _process_input_callback(GLFWwindow* window, const int key, const int scancode,
-											const int action,
-											const int mods)
+											const int action, const int mods)
 		{
-			Key lysKey = convert_code(key);
+			const Key lysKey = static_cast<Key>(key);
 			InputState state;
 
 			if (action == GLFW_PRESS && !m_events.contains(lysKey))
@@ -66,7 +63,8 @@ namespace Lys
 			m_events[lysKey] = event;
 		}
 
-		static void _process_mouse_callback(GLFWwindow* window, const double xposIn, const double yposIn)
+		static void _process_mouse_callback(GLFWwindow* window, const double xposIn,
+											const double yposIn)
 		{
 		}
 
@@ -85,11 +83,11 @@ namespace Lys
 				InputState state = event->get_state();
 
 				// Update the map depending on the event state
-				if (state == InputState::JUST_PRESSED)
+				if (state == JUST_PRESSED)
 				{
-					m_events[key]->set_state(InputState::PRESSED);
+					m_events[key]->set_state(PRESSED);
 				}
-				else if (state == InputState::JUST_RELEASED)
+				else if (state == JUST_RELEASED)
 				{
 					m_events.erase(key); // Key is released, remove from active map
 				}
@@ -210,31 +208,6 @@ namespace Lys
 		}
 
 	private:
-		/**
-		 * @brief Converts an integer code from GLFW to enum Key.
-		 *
-		 * @param key The GLFW key code.
-		 * @return Key The converted key.
-		 */
-		static Key convert_code(int key)
-		{
-			Key lysKey;
-			if (key == GLFW_KEY_LEFT_SHIFT || key == GLFW_KEY_RIGHT_SHIFT)
-			{
-				lysKey = Key::KEY_SHIFT;
-			}
-			else if (key == GLFW_KEY_LEFT_ALT || key == GLFW_KEY_RIGHT_ALT)
-			{
-				lysKey = Key::KEY_ALT;
-			}
-			else
-			{
-				lysKey = static_cast<Key>(key);
-			}
-
-			return lysKey;
-		}
-
 		/**
 		 * @brief Clear all elements that are not currently pressed from recent queue.
 		 */

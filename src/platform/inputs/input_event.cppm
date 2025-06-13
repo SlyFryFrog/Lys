@@ -33,17 +33,17 @@ namespace Lys
 
         [[nodiscard]] bool is_pressed() const
         {
-            return m_state == InputState::JUST_PRESSED || m_state == InputState::PRESSED;
+            return m_state == JUST_PRESSED || m_state == PRESSED;
         }
 
         [[nodiscard]] bool is_just_pressed() const
         {
-            return m_state == InputState::JUST_PRESSED;
+            return m_state == JUST_PRESSED;
         }
 
         [[nodiscard]] bool is_just_released() const
         {
-            return m_state == InputState::JUST_RELEASED;
+            return m_state == JUST_RELEASED;
         }
 
         void set_state(const InputState state)

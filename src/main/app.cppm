@@ -39,12 +39,7 @@ namespace Lys
 				m_window.swap_buffers();
 				Window::clear_buffer();
 				Window::poll_events();
-
-				if (InputManager::is_ordered_combo_hold({KEY_ESCAPE, KEY_SHIFT}))
-				{
-					break;
-				}
-
+				
 				InputManager::_process();
 			}
 		}
