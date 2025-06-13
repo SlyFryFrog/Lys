@@ -58,12 +58,11 @@ public:
 
 			draw_square(delta);
 
-			if (InputManager::is_ordered_combo_hold({KEY_LEFT_SHIFT, KEY_ESCAPE}))
+			if (InputManager::is_ordered_pressed({KEY_LEFT_SHIFT, KEY_ESCAPE}))
 			{
 				break;
 			}
-
-			if (InputManager::is_just_pressed(KEY_0))
+			if (InputManager::is_ordered_pressed({KEY_0}) && InputManager::is_just_pressed(KEY_0))
 			{
 				switch (mode)
 				{

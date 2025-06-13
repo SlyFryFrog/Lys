@@ -17,12 +17,17 @@ namespace Lys
 		static std::queue<std::shared_ptr<InputEvent>> m_recentQueue;
 		static std::map<Key, std::shared_ptr<InputEvent>> m_events; // Register events for quick
 																	// access
-		static constexpr size_t MAX_RECENT_QUEUE = 10;
 
 	public:
 		static void _process_input_callback(GLFWwindow* window, const int key, const int scancode,
 											const int action, const int mods)
 		{
+			// Ignore repeated events as they are updated in _process() when called externally
+			if (action == GLFW_REPEAT)
+			{
+				return;
+			}
+
 			const Key lysKey = static_cast<Key>(key);
 			InputState state;
 
@@ -34,30 +39,12 @@ namespace Lys
 			{
 				state = JUST_RELEASED;
 			}
-			else if (action == GLFW_REPEAT)
-			{
-				if (m_events[lysKey]->get_state() == JUST_PRESSED)
-				{
-					m_events[lysKey]->set_state(PRESSED);
-				}
-				else
-				{
-					m_events[lysKey]->set_state(RELEASED);
-				}
-			}
 
-			std::shared_ptr<InputEvent> event = std::make_shared<InputEvent>(lysKey, state);
+			const auto event = std::make_shared<InputEvent>(lysKey, state);
 
 			// Add to recent queue if just pressed
-			if (state == JUST_PRESSED)
-			{
-				m_recentQueue.push(event);
-
-				if (m_recentQueue.size() > MAX_RECENT_QUEUE)
-				{
-					m_recentQueue.pop(); // Keep the queue size limited
-				}
-			}
+			// Used for handling combinations of keys being pressed
+			m_recentQueue.push(event);
 
 			m_eventQueue.push(event);
 			m_events[lysKey] = event;
@@ -73,14 +60,19 @@ namespace Lys
 		 */
 		static void _process()
 		{
-			// Handle all events in the queue
+			// Handle all events in the queue by iterating through the queue and popping all events.
+			// After popping an event from the eventQueue, the state of the key in the map is
+			// either:
+			// 1. Updated to reflect it being "PRESSED"
+			// 2. Erased to reflect it being "RELEASED"
 			while (!m_eventQueue.empty())
 			{
-				std::shared_ptr<InputEvent> event = m_eventQueue.front();
+				// Extract event from the eventQueue
+				const std::shared_ptr<InputEvent> event = m_eventQueue.front();
 				m_eventQueue.pop();
 
 				Key key = event->get_key();
-				InputState state = event->get_state();
+				const InputState state = event->get_state();
 
 				// Update the map depending on the event state
 				if (state == JUST_PRESSED)
@@ -147,7 +139,7 @@ namespace Lys
 		 * @return false Either not all keys are pressed or some key is pressed that is not in the
 		 * keys.
 		 */
-		static bool is_ordered_combo_hold(const std::initializer_list<Key>& keys)
+		static bool is_ordered_pressed(const std::initializer_list<Key>& keys)
 		{
 			std::queue<std::shared_ptr<InputEvent>> tempRecentQueue = m_recentQueue;
 			auto it = keys.begin();
@@ -155,7 +147,7 @@ namespace Lys
 			while (it != keys.end() && !tempRecentQueue.empty())
 			{
 				std::shared_ptr<InputEvent> currentEvent = tempRecentQueue.front();
-				if (currentEvent->get_key() == *it && currentEvent->is_pressed())
+				if (currentEvent->get_key() == *it && (currentEvent->is_pressed() || currentEvent->is_just_pressed()))
 				{
 					tempRecentQueue.pop();
 					it++;
@@ -176,26 +168,26 @@ namespace Lys
 			{
 				for (const Key& key : keys)
 				{
-					if (!m_events.contains(key) || !m_events[key]->is_pressed())
+					if (!m_events.contains(key) || !(m_events[key]->is_pressed() || m_events[key]->is_just_pressed()))
 					{
 						return false; // Not all keys are held
 					}
 				}
 
 				// Iterate through each Key, InputEvent
-				for (const auto& pair : m_events)
+				for (const auto& [key, event] : m_events)
 				{
 					bool inCombo = false;
 					for (const Key& comboKey : keys)
 					{
-						if (pair.first == comboKey)
+						if (key == comboKey)
 						{
 							inCombo = true;
 							break;
 						}
 					}
 
-					if (!inCombo && pair.second->is_pressed())
+					if (!inCombo && event->is_pressed())
 					{
 						return false; // Another key is pressed
 					}

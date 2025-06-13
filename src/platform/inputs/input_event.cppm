@@ -33,7 +33,7 @@ namespace Lys
 
         [[nodiscard]] bool is_pressed() const
         {
-            return m_state == JUST_PRESSED || m_state == PRESSED;
+            return m_state == PRESSED;
         }
 
         [[nodiscard]] bool is_just_pressed() const
