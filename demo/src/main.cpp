@@ -47,6 +47,7 @@ public:
 		PolygonMode mode = FILL;
 		Timer deltaTimer;
 		deltaTimer.start();
+		init_square_resources();
 
 		while (!m_window.is_done())
 		{
