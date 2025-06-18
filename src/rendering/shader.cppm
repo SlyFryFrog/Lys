@@ -9,7 +9,7 @@ import lys.core.io.file;
 
 namespace Lys
 {
-	export enum ShaderType { Vertex, Fragment, Geometry, Compute };
+	export enum ShaderType { VERTEX, FRAGMENT, GEOMETRY, COMPUTE };
 
 	export class IShader
 	{

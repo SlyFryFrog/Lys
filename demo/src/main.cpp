@@ -47,7 +47,7 @@ public:
 		PolygonMode mode = FILL;
 		Timer deltaTimer;
 		deltaTimer.start();
-		init_square_resources();
+		init_mesh();
 
 		while (!m_window.is_done())
 		{
@@ -57,7 +57,7 @@ public:
 
 			double delta = deltaTimer.delta();
 
-			draw_square(delta);
+			draw_mesh(delta);
 
 			if (InputManager::is_ordered_pressed({KEY_LEFT_SHIFT, KEY_ESCAPE}))
 			{

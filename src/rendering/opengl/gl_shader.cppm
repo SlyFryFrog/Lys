@@ -28,19 +28,19 @@ namespace Lys::GL
 		void compile() override
 		{
 			// Give OpenGL the appropriate shader type during creation
-			if (m_type == Vertex)
+			if (m_type == VERTEX)
 			{
 				m_id = glCreateShader(GL_VERTEX_SHADER);
 			}
-			else if (m_type == Fragment)
+			else if (m_type == FRAGMENT)
 			{
 				m_id = glCreateShader(GL_FRAGMENT_SHADER);
 			}
-			else if (m_type == Geometry)
+			else if (m_type == GEOMETRY)
 			{
 				m_id = glCreateShader(GL_GEOMETRY_SHADER);
 			}
-			else if (m_type == Compute)
+			else if (m_type == COMPUTE)
 			{
 				m_id = glCreateShader(GL_COMPUTE_SHADER);
 			}

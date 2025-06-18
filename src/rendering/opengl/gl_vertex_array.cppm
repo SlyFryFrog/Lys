@@ -1,5 +1,8 @@
 module;
 #include <GL/glew.h>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 #include <memory>
 #include <vector>
 export module lys.opengl.gl_vertex_array;
@@ -11,7 +14,7 @@ namespace Lys::GL
 		INT = GL_INT,
 		UINT = GL_UNSIGNED_INT,
 		BOOL = GL_BOOL,
-		DOUBLE = GL_DOUBLE,
+		DOUBLE = GL_DOUBLE
 	};
 
 	export int sizeof_data_type(const DataType type)
@@ -80,7 +83,7 @@ namespace Lys::GL
 			}
 		}
 
-		template<std::size_t T>
+		template <std::size_t T>
 		void add_attributes(const std::array<VertexAttribute, T>& data)
 		{
 			for (const VertexAttribute attrib : data)
@@ -176,7 +179,7 @@ namespace Lys::GL
 			glDeleteBuffers(1, &m_id);
 		}
 
-		void bind(const void* data, const unsigned int size) const
+		void set_data(const void* data, const unsigned int size) const
 		{
 			glBindBuffer(GL_ARRAY_BUFFER, m_id);
 			glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
@@ -201,43 +204,16 @@ namespace Lys::GL
 	export class IndexBuffer
 	{
 		unsigned int m_id{};
-		unsigned int m_count{};
+		GLsizeiptr m_size{};
 
 	public:
 		IndexBuffer() = default;
-		IndexBuffer(const unsigned int* data, const unsigned int count) : m_count(count)
-		{
-			glGenBuffers(1, &m_id);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data,
-						 GL_STATIC_DRAW);
-		}
 
 		IndexBuffer(const IndexBuffer&) = delete;
 		IndexBuffer& operator=(const IndexBuffer&) = delete;
 
-		IndexBuffer(IndexBuffer&& other) noexcept : m_id(other.m_id), m_count(other.m_count)
-		{
-			other.m_id = 0;
-			other.m_count = 0;
-		}
-
-		IndexBuffer& operator=(IndexBuffer&& other) noexcept
-		{
-			if (this != &other)
-			{
-				glDeleteBuffers(1, &m_id);
-				m_id = other.m_id;
-				m_count = other.m_count;
-				other.m_id = 0;
-				other.m_count = 0;
-			}
-			return *this;
-		}
-
 		~IndexBuffer()
 		{
-			// Delete data associated with renderer
 			if (m_id != 0)
 			{
 				glDeleteBuffers(1, &m_id);
@@ -249,9 +225,16 @@ namespace Lys::GL
 			return m_id;
 		}
 
-		[[nodiscard]] unsigned int get_count() const
+		void set_data(const void* data, const GLsizeiptr size)
 		{
-			return m_count;
+			if (m_id == 0)
+			{
+				glGenBuffers(1, &m_id);
+			}
+
+			m_size = size;
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 		}
 
 		void bind() const
@@ -264,4 +247,5 @@ namespace Lys::GL
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 	};
+	;
 } // namespace Lys::GL
