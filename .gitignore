@@ -21,7 +21,6 @@ CTestTestfile.cmake
 
 # --- Compilers ---
 *.o
-*.obj
 *.so
 *.dylib
 *.dll

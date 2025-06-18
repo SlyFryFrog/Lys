@@ -62,4 +62,6 @@ namespace Lys
 	 * @brief Current working directory where the executable is located.
 	 */
 	export const std::string WorkingDirectory = get_working_directory();
+
+	export float ClearColor[4] = {0.3f, 0.3f, 0.3f, 1.0};
 } // namespace Lys

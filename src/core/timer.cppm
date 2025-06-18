@@ -67,5 +67,45 @@ namespace Lys
 
 			return delta;
 		}
+
+		[[nodiscard]] double peek_delta() const
+		{
+			if (!m_isRunning)
+			{
+				return 0.0;
+			}
+
+			const auto now = std::chrono::high_resolution_clock::now();
+			const double delta = std::chrono::duration<double>(now - m_prev).count();
+
+			return delta;
+		}
+
+		[[nodiscard]] double elapsed()
+		{
+			if (!m_isRunning)
+			{
+				return 0.0;
+			}
+
+			const auto now = std::chrono::high_resolution_clock::now();
+			const double elapsed = std::chrono::duration<double>(now - m_start).count();
+			m_start = now;
+
+			return elapsed;
+		}
+
+		[[nodiscard]] double peek_elapsed() const
+		{
+			if (!m_isRunning)
+			{
+				return 0.0;
+			}
+
+			const auto now = std::chrono::high_resolution_clock::now();
+			const double elapsed = std::chrono::duration<double>(now - m_prev).count();
+
+			return elapsed;
+		}
 	};
 } // namespace Lys

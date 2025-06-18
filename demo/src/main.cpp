@@ -2,6 +2,7 @@
 // #include <jlcxx/type_conversion.hpp>
 // #include <julia.h>
 // #include <vector>
+#include <GL/glew.h>
 
 import lys;
 import lys.opengl;
@@ -48,6 +49,8 @@ public:
 		Timer deltaTimer;
 		deltaTimer.start();
 		init_mesh();
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
 
 		while (!m_window.is_done())
 		{

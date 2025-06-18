@@ -7,9 +7,15 @@ export module lys.platform.platform_interfaces;
 
 import lys.rendering;
 import lys.platform.input.input_manager;
+import lys.utils;
 
 namespace Lys
 {
+	/**
+	 * @note On macOS, there is a bug where modifiers such as shift, cmd, alt do not report their
+	 * release when using the snipping tool. See https://github.com/glfw/glfw/issues/1011 for
+	 * further details.
+	 */
 	export class IWindow
 	{
 	protected:
@@ -25,11 +31,13 @@ namespace Lys
 		explicit IWindow(std::string title) : m_title(std::move(title))
 		{
 		}
-		IWindow(const bool fullscreen, std::string  title) :
+
+		IWindow(const bool fullscreen, std::string title) :
 			m_title(std::move(title)), m_fullscreen(fullscreen)
 		{
 		}
-		IWindow(const int width, const int height, std::string  title) :
+
+		IWindow(const int width, const int height, std::string title) :
 			m_title(std::move(title)), m_width(width), m_height(height)
 		{
 		}
@@ -57,8 +65,8 @@ namespace Lys
 
 		static void clear_buffer()
 		{
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClearColor(ClearColor[0], ClearColor[1], ClearColor[2], ClearColor[3]);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
 
 		static void terminate()
@@ -181,6 +189,11 @@ namespace Lys
 
 			glfwGetFramebufferSize(window, &m_width, &m_height);
 			frame_buffer_callback(window, m_width, m_height);
+		}
+
+		static GLFWwindow* get_current_context()
+		{
+			return glfwGetCurrentContext();
 		}
 	};
 } // namespace Lys
